@@ -1,9 +1,10 @@
 language: node_js
 node_js:
     - "node"
+before install:
+  - npm install -g istanbul
 install:
   - npm install -g codecov
-  - npm install -g istanbul
 script:
   - istanbul cover ./node_modules/tape/bin/tape tests/* --reporter lcovonly -- -R spec
   - codecov
