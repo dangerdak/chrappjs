@@ -1,7 +1,7 @@
 language: node_js
 node_js:
     - "node"
-before install:
+before_install:
   - npm install -g istanbul
 install:
   - npm install -g codecov
