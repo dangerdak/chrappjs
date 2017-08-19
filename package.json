@@ -9,7 +9,7 @@
   "scripts": {
     "test": "tape tests/*.test.js | tap-spec",
     "start:watch": "nodemon src/index.js",
-    "coverage": "./node_modules/.bin/istanbul cover tape ./tests/*.js"
+    "coverage": "./node_modules/.bin/istanbul cover ./tests/*.test.js"
   },
   "author": "",
   "license": "ISC",
