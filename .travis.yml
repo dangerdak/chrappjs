@@ -6,5 +6,5 @@ before_install:
 install:
   - npm install -g codecov
 script:
-  - istanbul cover ./node_modules/tape/bin/tape tests/* --reporter lcovonly -- -R spec
+  - istanbul cover tests/*.test.js --reporter lcovonly -- -R spec
   - codecov
