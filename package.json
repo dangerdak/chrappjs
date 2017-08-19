@@ -4,12 +4,12 @@
   "description": "Secret Santa app",
   "main": "index.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "tape tests/*.test.js | tap-spec",
+    "test": "tape test/*.test.js | tap-spec",
     "start:watch": "nodemon src/index.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./tests/*.test.js"
+    "coverage": "./node_modules/.bin/istanbul cover ./test/*.test.js"
   },
   "author": "",
   "license": "ISC",
