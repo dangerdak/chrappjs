@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "tape tests/*.test.js | tap-spec",
-    "start:watch": "nodemon src/index.js"
+    "start:watch": "nodemon src/index.js",
+    "coverage": "./node_modules/.bin/istanbul cover tape ./tests/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "express-handlebars": "^3.0.0"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
     "supertest": "^3.0.0",
     "tap-spec": "^4.1.1",
