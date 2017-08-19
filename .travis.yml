@@ -3,6 +3,7 @@ node_js:
     - "node"
 install:
   - npm install -g codecov
+  - npm install -g istanbul
 script:
   - istanbul cover ./node_modules/tape/bin/tape tests/* --reporter lcovonly -- -R spec
   - codecov
