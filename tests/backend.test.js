@@ -3,18 +3,14 @@ const supertest = require('supertest');
 
 const app = require('./../src/app');
 
-test('tape running', (t) => {
-  t.pass();
-  t.end();
-});
-
 test('/login get', (t) => {
   supertest(app)
     .get('/login')
     .expect(200)
     .end((err, res) => {
+      const title = '<h2>Login</h2>';
       t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes('login'), 'Page contains string \'<h2>Login</h2>\'');
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
       t.end();
     });
 });
@@ -24,8 +20,21 @@ test('/register get', (t) => {
     .get('/register')
     .expect(200)
     .end((err, res) => {
+      const title = '<h2>Register</h2>';
       t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes('<h2>Register</h2>'), 'Page contains string \'<h2>Register</h2>\'');
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
+
+test('/groups get', (t) => {
+  supertest(app)
+    .get('/groups')
+    .expect(200)
+    .end((err, res) => {
+      const title = '<h2>Your Groups</h2>';
+      t.equals(res.status, 200, 'Responds with 200 status');
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
       t.end();
     });
 });
