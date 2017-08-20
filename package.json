@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.test.js | tap-spec",
+    "test": "tape src/test/*.test.js | tap-spec",
     "start:watch": "nodemon src/index.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./test/*.test.js"
+    "coverage": "./node_modules/.bin/istanbul cover ./src/test/*.test.js"
   },
   "author": "",
   "license": "ISC",
