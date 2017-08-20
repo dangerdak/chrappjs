@@ -1,7 +1,7 @@
 const test = require('tape');
 const supertest = require('supertest');
 
-const app = require('./../app');
+const app = require('./../src/app');
 
 test('/login get', (t) => {
   supertest(app)
