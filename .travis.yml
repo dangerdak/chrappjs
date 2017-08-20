@@ -4,5 +4,6 @@ node_js:
 install:
   - npm install -g codecov istanbul
 script:
-  - istanbul cover ./src/test/backend.test.js --reporter lcovonly -- -R spec
-  - codecov
+  - npm run coverage
+after_success:
+    - codecov
