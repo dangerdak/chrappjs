@@ -16,9 +16,11 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "pg": "^7.1.2"
   },
   "devDependencies": {
+    "env2": "^2.2.0",
     "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
     "supertest": "^3.0.0",
