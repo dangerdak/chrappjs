@@ -7,3 +7,7 @@ _A Secret Santa App_
 ### Stages of development
 1. Serve a few pages.  
    Write tests for status code and title string for each
+
+## Learnings
+* travis 'install' stage is where npm install happens - so be careful if
+  you override this in `.travis.yml`
