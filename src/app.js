@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 
 // import controllers/routes
 const controllers = require('./controllers/index');
@@ -20,6 +21,7 @@ app.engine(
 );
 
 app.set('port', process.env.PORT || 3000);
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(controllers);
 
 module.exports = app;

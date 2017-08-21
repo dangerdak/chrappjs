@@ -38,3 +38,15 @@ test('/groups get', (t) => {
       t.end();
     });
 });
+
+test('/register post', (t) => {
+  supertest(app)
+    .get('/register')
+    .expect(200)
+    .end((err, res) => {
+      const title = '<h2>Your Groups</h2>';
+      t.equals(res.status, 302, 'Responds with 302 status');
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
