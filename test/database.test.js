@@ -10,6 +10,7 @@ const getUser = require('../queries/getUser');
 test('Insert user into database', (t) => {
   dbReset();
   insertUser('james', 'james@gmail.com', 'jammy', (err, result) => {
+    console.log(result);
     t.equal(typeof result[0].id, 'number', 'Returns an array containing the user\'s id');
     t.end();
   });
