@@ -7,13 +7,18 @@ _A Secret Santa App_
 ### Stages of development
 1. Serve a few pages.  
    Write tests for status code and title string for each
-2. Add ability to have users  
-   Also write tests for database queries
+2. Add users to database
+   * Create database build files
+   * Database queries (insert user, get user)
+   * Also write tests for database queries
+3. Link login and registration pages to database
 
 ## Things I Learnt
 * travis 'install' stage is where npm install happens - so be careful if
   you override this in `.travis.yml`
-* To stop database connections from hanging, use pg pool's `end` method to close the connection [see docs](https://node-postgres.com/api/pool#pool-end)
+* To stop database connections from hanging, use pg pool's `end` method to close the connection [see docs](https://node-postgres.com/api/pool#pool-end)  
+  (there are restrictions on when you can do this - maybe not more than once
+  for a given pool?)
 * To be able to [run
   a module](http://coding.pstodulka.com/2014/10/22/node-modules-as-cli/) from the command line:  
   ```
