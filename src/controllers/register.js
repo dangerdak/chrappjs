@@ -8,8 +8,14 @@ exports.post = (req, res) => {
   const formData = req.body;
   const hashedPassword = sign(formData.password);
   insertUser(formData.name, formData.email, hashedPassword, (err, result) => {
-    // TODO 500 page
-    if (err) return console.log(err);
+    if (err) {
+      res.status(500).render('error', {
+        layout: 'error',
+        statusCode: 500,
+        errorMessage: 'Internal server error',
+      });
+      return console.log(err);
+    }
     res.redirect('groups');
   })
 };

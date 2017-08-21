@@ -8,8 +8,14 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
   const formData = req.body;
   getUser(formData.email, (err, userData) => {
-    // TODO 500 error
-    if (err) return console.log(err);
+    if (err) {
+      res.status(500).render('error', {
+        layout: 'error',
+        statusCode: 500,
+        errorMessage: 'Internal server error',
+      });
+      return console.log(err);
+    }
     if (!userData || sign(formData.password) !== userData.password) {
       // TODO incorrect email or password message
       return console.log('Incorrect email or password');
