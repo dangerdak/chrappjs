@@ -27,8 +27,6 @@ test('Get user from database based on email', (t) => {
       Object.keys(expected).forEach((key) => {
         t.equal(result[0].key, expected.key, `Returns object with same ${key}`);
       });
-      // TODO should be after all tests complete => waterfall?
-      dbConnection.end();
       t.end();
     });
   });
