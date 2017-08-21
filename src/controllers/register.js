@@ -8,8 +8,8 @@ exports.post = (req, res) => {
   const formData = req.body;
   const hashedPassword = sign(formData.password);
   insertUser(formData.name, formData.email, hashedPassword, (err, result) => {
-    // 500 page
-    if (err) console.log(err);
+    // TODO 500 page
+    if (err) return console.log(err);
+    res.redirect('groups');
   })
-  res.redirect('groups');
 };
