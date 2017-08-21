@@ -1,6 +1,7 @@
 const test = require('tape');
 const supertest = require('supertest');
 
+const dbReset = require('../database/db_build');
 const app = require('./../src/app');
 
 test('/login get', (t) => {

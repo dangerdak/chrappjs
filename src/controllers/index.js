@@ -9,4 +9,7 @@ router.get('/login', login.get);
 router.get('/register', register.get);
 router.get('/groups', groups.get);
 
+router.post('/register', register.post);
+router.post('/login', login.post);
+
 module.exports = router;

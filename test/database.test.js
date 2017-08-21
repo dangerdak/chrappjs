@@ -26,7 +26,7 @@ test('Get user from database based on email', (t) => {
     insertUser('james', 'james@gmail.com', 'jammy', (err, result) => {
       getUser('james@gmail.com', (err, result) => {
         Object.keys(expected).forEach((key) => {
-          t.equal(result[0].key, expected.key, `Returns object with same ${key}`);
+          t.equal(result.key, expected.key, `Returns object with same ${key}`);
         });
         t.end();
       })
