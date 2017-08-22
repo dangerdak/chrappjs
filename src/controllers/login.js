@@ -9,18 +9,23 @@ exports.post = (req, res) => {
   const formData = req.body;
   getUser(formData.email, (err, userData) => {
     if (err) {
+      console.log(err);
       res.status(500).render('error', {
         layout: 'error',
         statusCode: 500,
         errorMessage: 'Internal server error',
       });
-      return console.log(err);
     }
-    if (!userData || sign(formData.password) !== userData.password) {
-      // TODO incorrect email or password message
-      return console.log('Incorrect email or password');
+    else if (!userData || sign(formData.password) !== userData.password) {
+      // user doesn't exist or incorrect password
+      res.status(400).render('login', {
+        pageTitle: 'Login',
+        messages: [{content: 'Incorrect email or password', error: true}],
+        formData,
+      });
     }
-    console.log(userData.id);
-    res.redirect('groups');
+    else {
+      res.redirect('groups');
+    }
   });
 };
