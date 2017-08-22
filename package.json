@@ -17,7 +17,8 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
-    "pg": "^7.1.2"
+    "pg": "^7.1.2",
+    "serve-favicon": "^2.4.3"
   },
   "devDependencies": {
     "env2": "^2.2.0",
