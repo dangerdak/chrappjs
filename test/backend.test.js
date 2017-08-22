@@ -16,7 +16,7 @@ test('/login get', (t) => {
     });
 });
 
-test('/login post invalid user', (t) => {
+test('/login post for user who doesn\'t exist', (t) => {
   supertest(app)
     .post('/login')
     .type('form')
@@ -26,6 +26,21 @@ test('/login post invalid user', (t) => {
       const title = '<h2>Login</h2>';
       t.equals(res.status, 400, 'Responds with 400 status');
       t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
+
+test('/login post invalid data', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: '', password: 'hihi' })
+    .expect(400)
+    .end((err, res) => {
+      const title = '<h2>Login</h2>';
+      t.equals(res.status, 400, 'Responds with 400 status');
+      t.ok(res.text.includes('Email is required'), 'Page contains correct error message');
       t.ok(res.text.includes(title), `Page contains string ${title}`);
       t.end();
     });

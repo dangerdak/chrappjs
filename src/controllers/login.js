@@ -19,7 +19,6 @@ exports.post = (req, res) => {
   else {
     getUser(formData.email, (err, userData) => {
       if (err) {
-        console.log(err);
         res.status(500).render('error', {
           layout: 'error',
           statusCode: 500,
