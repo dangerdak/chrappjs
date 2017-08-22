@@ -3,22 +3,22 @@ const test = require('tape');
 const validate = require('../src/controllers/validate');
 
 test('Registration validation', (t) => {
-  let input = ['bob', 'd@d.com', 'd', 'd'];
-  let actual = validate.registration(...input).isValid;
+  let input = { name: 'bob', email: 'd@d.com', password: 'd', confirmPassword: 'd' };
+  let actual = validate.validateRegistration(input).isValid;
   t.ok(actual, 'Returns object with isValid set to true if input is valid');
-  input[0] = 5;
-  actual = validate.registration(...input).message;
+  input.name = 5;
+  actual = validate.validateRegistration(input).message;
   t.equal(actual, 'Name must be a string', 'Responds with correct message if name is of wrong type');
   t.end();
 });
 
 test('Login validation', (t) => {
-  let input = ['bob@g.com', 'd'];
-  let actual = validate.login(...input).isValid;
+  let input = { email: 'bob@g.com', password: 'd' };
+  let actual = validate.validateLogin(input).isValid;
   t.ok(actual, 'Returns object with isValid set to true if input is valid');
-  input[0] = 5;
-  actual = validate.registration(...input).message;
-  t.equal(actual, 'Name must be a string', 'Responds with correct message if name is of wrong type');
+  input.email = 5;
+  actual = validate.validateLogin(input).message;
+  t.equal(actual, 'Email must be a string', 'Responds with correct message if email is of wrong type');
   t.end();
 });
 

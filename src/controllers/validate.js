@@ -32,32 +32,28 @@ const validateConfirmPassword = (password, confirmPassword) => {
   if (!confirmPassword) {
     throw new TypeError('Password confirmation is required');
   }
-  if (typeof confirmPassword !== 'string') {
-    throw new TypeError('Password confirmation must be a string');
-  }
   if (password !== confirmPassword) {
-    throw new Error('Passwords must match');
+    throw new TypeError('Passwords must match');
   }
 };
 
-const registration = (name, email, password, confirmPassword) => {
+const validateRegistration = (input) => {
   try {
-    validateName(name);
-    validateEmail(email);
-    validatePassword(password);
-    validateConfirmPassword(password, confirmPassword);
+    validateName(input.name);
+    validateEmail(input.email);
+    validatePassword(input.password);
+    validateConfirmPassword(input.password, input.confirmPassword);
     return { isValid: true };
   }
   catch (e) {
     return { isValid: false, message: e.message };
-    
   }
 };
 
-const login = (email, password) => {
+const validateLogin = (input) => {
   try {
-    validateEmail(email);
-    validatePassword(password);
+    validateEmail(input.email);
+    validatePassword(input.password);
     return { isValid: true };
   }
   catch (e) {
@@ -70,6 +66,6 @@ module.exports = {
   validateEmail,
   validatePassword,
   validateConfirmPassword,
-  registration,
-  login,
+  validateRegistration,
+  validateLogin,
 };

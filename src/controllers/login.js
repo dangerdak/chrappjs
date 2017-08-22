@@ -1,5 +1,6 @@
 const { sign, validate } = require('./passwordModule')();
 const getUser = require('../../queries/getUser');
+const { validateLogin } = require('./validate');
 
 exports.get = (req, res) => {
   res.render('login', { pageTitle: 'Login'});
@@ -7,11 +8,12 @@ exports.get = (req, res) => {
 
 exports.post = (req, res) => {
   const formData = req.body;
-  if (!formData.email || !formData.password) {
+  const validatedLogin = validateLogin(formData);
+  if (!validatedLogin.isValid) {
     // field left blank
     res.status(400).render('login', {
       pageTitle: 'Login',
-      messages: [{content: 'All fields are required', error: true}],
+      messages: [{content: validatedLogin.message, error: true}],
       formData,
     });
   }
