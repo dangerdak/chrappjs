@@ -10,7 +10,6 @@ exports.post = (req, res) => {
   const formData = req.body;
   const validatedLogin = validateLogin(formData);
   if (!validatedLogin.isValid) {
-    // field left blank
     res.status(400).render('login', {
       pageTitle: 'Login',
       messages: [{content: validatedLogin.message, error: true}],
@@ -36,7 +35,9 @@ exports.post = (req, res) => {
         });
       }
       else {
-        res.redirect('groups');
+        // login successful
+        req.session.user_id = userData.id;
+        res.redirect(req.session.destination || 'groups');
       }
     });
   }

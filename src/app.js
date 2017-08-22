@@ -3,9 +3,11 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
+const session = require('express-session');
 
-// import controllers/routes
 const controllers = require('./controllers/index');
+const requireLogin = require('./controllers/requireLogin');
+
 
 const app = express();
 
@@ -24,6 +26,20 @@ app.engine(
 app.set('port', process.env.PORT || 3000);
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.png')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(session({
+  store: new (require('connect-pg-simple')(session))(),
+  secret: 'keyboard cat',
+  // node-connect-pg-simple implements the 'touch' method presumably
+  // (as this is set to false in docs)
+  resave: false,
+  // false recommended for login sessions
+  saveUninitialized: false,
+  name: 'id',
+  cookie: {
+    httpOnly: true,
+  }
+}));
+app.use('/groups', requireLogin);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(controllers);
 
