@@ -17,18 +17,22 @@ test('/login get', (t) => {
 });
 
 test('/login post for user who doesn\'t exist', (t) => {
-  supertest(app)
-    .post('/login')
-    .type('form')
-    .send({ email: 'd@z', password: 'hihi' })
-    .expect(400)
-    .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 400, 'Responds with 400 status');
-      t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
+  // needs db setup/reset 
+  // as it depends on 'getUser' db query not erroring with code 500
+  dbReset(() => {
+    supertest(app)
+      .post('/login')
+      .type('form')
+      .send({ email: 'd@z', password: 'hihi' })
+      .expect(400)
+      .end((err, res) => {
+        const title = '<h2>Login</h2>';
+        t.equals(res.status, 400, 'Responds with 400 status');
+        t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
+        t.ok(res.text.includes(title), `Page contains string ${title}`);
+        t.end();
+      });
+  });
 });
 
 test('/login post invalid data', (t) => {
