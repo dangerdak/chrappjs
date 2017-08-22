@@ -25,3 +25,14 @@ _A Secret Santa App_
   if(require.main == module)
     yourFunction();
   ```
+* When using supertest for post requests, use the `.send` method to include
+  form data, and
+  [`.type('form')`](https://github.com/visionmedia/supertest/issues/168#issuecomment-73205931) to populate req.body with that data (you also
+  need to be using `body-parser` for this to work) e.g.:
+  ```
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'my@email.com', password: 'top secret' })
+    .end(blah blah blah);
+  ```
