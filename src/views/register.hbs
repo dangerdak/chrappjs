@@ -1,10 +1,10 @@
 <section>
     <form action="/register" method="POST">
         <label>Name: 
-            <input type="text" name="name">
+            <input type="text" name="name" {{#if formData}}value="{{formData.name}}"{{/if}}>
         </label>
         <label>Email: 
-            <input type="email" name="email">
+            <input type="email" name="email"{{#if formData}}value="{{formData.email}}"{{/if}}>
         </label>
         <label>Password: 
             <input type="password" name="password">

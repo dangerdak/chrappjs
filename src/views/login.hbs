@@ -1,10 +1,10 @@
 <section>
     <form action="/login" method="POST">
         <label>Email: 
-            <input type="text" name="email">
+            <input type="text" name="email" {{#if formData}}value="{{formData.email}}{{/if}}">
         </label>
         <label>Password:
-            <input type="text" name="password">
+            <input type="password" name="password">
         </label>
         <button type="submit">Login</button>
     </form>
