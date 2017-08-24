@@ -22,24 +22,27 @@ test('Insert user into database', (t) => {
 });
 
 test('Get user from database based on email', (t) => {
-  dbReset(() => {
-    const expected = {
-      name: 'james',
-      email: 'james@gmail.com',
-      pword: 'jammy'
-    };
-    insertUser('james', 'james@gmail.com', 'jammy')
-      .then(data => {
-        return getUser('james@gmail.com');
-      })
-      .then(data => {
-        return Object.keys(expected).forEach((key) => {
-          t.equal(result.key, expected.key, `Returns object with same ${key}`);
-        });
-      })
-      .then(() => {
-        t.end();
-        dbReset();
-      })
-  });
+  dbReset()
+    .then(() => {
+      return insertUser('james', 'james@gmail.com', 'jammy')
+    })
+    .then(data => {
+      return getUser('james@gmail.com');
+    })
+    .then(data => {
+      const expected = {
+        name: 'james',
+        email: 'james@gmail.com',
+        pword: 'jammy'
+      };
+      return Object.keys(expected).forEach((key) => {
+        t.equal(data.key, expected.key, `Returns object with same ${key}`);
+      });
+    })
+    .then(() => {
+      t.end();
+    })
+    .catch(err => {
+      console.log(err);
+    })
 });
