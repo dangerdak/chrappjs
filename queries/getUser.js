@@ -5,7 +5,7 @@ const sqlGetUser = 'SELECT * FROM users WHERE email = $1';
 const getUser = (email) => {
   return dbConnection.query(sqlGetUser, [email])
     .then(userData => {
-      return userData;
+      return userData[0];
     })
 };
 
