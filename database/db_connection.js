@@ -21,14 +21,4 @@ const connection = {
 };
 const db = pgp(connection);
 
-const options = {
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split('/')[1],
-  max: process.env.DB_MAX_CONNECTIONS || 20,
-  user: username,
-  password,
-  ssl: params.hostname !== 'localhost',
-};
-
 module.exports = db;
