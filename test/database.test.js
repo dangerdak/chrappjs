@@ -28,8 +28,10 @@ test('Get user from database based on email', (t) => {
         Object.keys(expected).forEach((key) => {
           t.equal(result.key, expected.key, `Returns object with same ${key}`);
         });
-        t.end();
-      })
+        dbReset(() => {
+          t.end();
+        });
+      });
     });
   });
 });
