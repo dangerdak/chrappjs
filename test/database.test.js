@@ -8,12 +8,17 @@ const insertUser = require('../queries/insertUser');
 const getUser = require('../queries/getUser');
 
 test('Insert user into database', (t) => {
-  dbReset(() => {
-    insertUser('james', 'james@gmail.com', 'jammy', (err, result) => {
-      t.equal(typeof result[0].id, 'number', 'Returns an array containing the user\'s id');
+  dbReset()
+    .then(() => {
+      return insertUser('james', 'james@gmail.com', 'jammy')
+    })
+    .then(data => {
+      t.equal(typeof data.id, 'number', 'Returns an array containing the user\'s id');
       t.end();
     })
-  });
+    .catch(err => {
+      console.log(err);
+    })
 });
 
 test('Get user from database based on email', (t) => {
@@ -23,15 +28,18 @@ test('Get user from database based on email', (t) => {
       email: 'james@gmail.com',
       pword: 'jammy'
     };
-    insertUser('james', 'james@gmail.com', 'jammy', (err, result) => {
-      getUser('james@gmail.com', (err, result) => {
-        Object.keys(expected).forEach((key) => {
+    insertUser('james', 'james@gmail.com', 'jammy')
+      .then(data => {
+        return getUser('james@gmail.com');
+      })
+      .then(data => {
+        return Object.keys(expected).forEach((key) => {
           t.equal(result.key, expected.key, `Returns object with same ${key}`);
         });
-        dbReset(() => {
-          t.end();
-        });
-      });
-    });
+      })
+      .then(() => {
+        t.end();
+        dbReset();
+      })
   });
 });
