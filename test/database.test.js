@@ -12,8 +12,8 @@ test('Insert user into database', (t) => {
     .then(() => {
       return insertUser('james', 'james@gmail.com', 'jammy')
     })
-    .then(data => {
-      t.equal(typeof data.id, 'number', 'Returns an array containing the user\'s id');
+    .then(id => {
+      t.equal(typeof id, 'number', 'Returns the user\'s id');
       t.end();
     })
     .catch(err => {
@@ -26,17 +26,17 @@ test('Get user from database based on email', (t) => {
     .then(() => {
       return insertUser('james', 'james@gmail.com', 'jammy')
     })
-    .then(data => {
+    .then(() => {
       return getUser('james@gmail.com');
     })
-    .then(data => {
+    .then(result => {
       const expected = {
         name: 'james',
         email: 'james@gmail.com',
         pword: 'jammy'
       };
       return Object.keys(expected).forEach((key) => {
-        t.equal(data.key, expected.key, `Returns object with same ${key}`);
+        t.equal(result.key, expected.key, `Returns object with same ${key}`);
       });
     })
     .then(() => {

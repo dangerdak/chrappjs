@@ -12,7 +12,7 @@ const buildFile = getSqlFile(path.join(__dirname, 'db_build.sql'));
 
 const build = () => {
   return dbConnection.any(buildFile)
-    .then(data => {
+    .then(() => {
       console.log('Database build successful.');
     })
 }

@@ -4,8 +4,8 @@ const sqlInsertUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2,
 
 const insertUser = (name, email, hashedPassword) => {
   return dbConnection.one(sqlInsertUser, [name, email, hashedPassword])
-    .then(data => {
-      return data;
+    .then(obj => {
+      return obj.id;
     })
 };
 
