@@ -20,6 +20,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.5",
     "pg": "^7.1.2",
+    "pg-promise": "^6.5.1",
     "serve-favicon": "^2.4.3"
   },
   "devDependencies": {
@@ -34,10 +35,22 @@
   },
   "nyc": {
     "watermarks": {
-      "lines": [80, 95],
-      "functions": [80, 95],
-      "branches": [80, 95],
-      "statements": [80, 95]
+      "lines": [
+        80,
+        95
+      ],
+      "functions": [
+        80,
+        95
+      ],
+      "branches": [
+        80,
+        95
+      ],
+      "statements": [
+        80,
+        95
+      ]
     }
   }
 }

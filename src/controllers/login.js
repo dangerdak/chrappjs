@@ -17,15 +17,9 @@ exports.post = (req, res) => {
     });
   }
   else {
-    getUser(formData.email, (err, userData) => {
-      if (err) {
-        res.status(500).render('error', {
-          layout: 'error',
-          statusCode: 500,
-          errorMessage: 'Internal server error',
-        });
-      }
-      else if (!userData || sign(formData.password) !== userData.password) {
+    getUser(formData.email)
+    .then(userData => {
+      if (!userData || sign(formData.password) !== userData.password) {
         // user doesn't exist or incorrect password
         res.status(400).render('login', {
           pageTitle: 'Login',
@@ -38,6 +32,13 @@ exports.post = (req, res) => {
         req.session.user_id = userData.id;
         res.redirect(req.session.destination || 'groups');
       }
-    });
+    })
+    .catch(err => {
+      res.status(500).render('error', {
+        layout: 'error',
+        statusCode: 500,
+        errorMessage: 'Internal server error',
+      });
+    })
   }
 };

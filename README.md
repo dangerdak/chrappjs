@@ -36,3 +36,6 @@ _A Secret Santa App_
     .send({ email: 'my@email.com', password: 'top secret' })
     .end(blah blah blah);
   ```
+## Resources
+* [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/)
+* [Using pg-promises](https://stackoverflow.com/a/44737312/3652070)
