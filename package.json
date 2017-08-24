@@ -9,7 +9,7 @@
   "scripts": {
     "test": "tape test/*.test.js | tap-spec",
     "start:watch": "nodemon src/index.js",
-    "coverage": "istanbul cover test/*.test.js"
+    "coverage": "nyc npm test && nyc report --reporter=html && nyc report --reporter=text-lcov > coverage.lcov"
   },
   "author": "",
   "license": "ISC",
@@ -23,11 +23,21 @@
     "serve-favicon": "^2.4.3"
   },
   "devDependencies": {
+    "codecov": "^2.3.0",
     "env2": "^2.2.0",
-    "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
+    "nyc": "^11.1.0",
     "supertest": "^3.0.0",
+    "supertest-session": "^3.1.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
+  },
+  "nyc": {
+    "watermarks": {
+      "lines": [80, 95],
+      "functions": [80, 95],
+      "branches": [80, 95],
+      "statements": [80, 95]
+    }
   }
 }

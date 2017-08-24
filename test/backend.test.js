@@ -62,6 +62,22 @@ test('/register get', (t) => {
     });
 });
 
+test('POST to /register with invalid data', (t) => {
+  supertest(app)
+    .post('/register')
+    .type('form')
+    .send({ name: '', email: 'd@z.vom', password: 'hi', confirmPassword: 'hid' })
+    .expect(400)
+    .end((err, res) => {
+      const title = '<h2>Register</h2>';
+      const message = 'Name is required';
+      t.equals(res.status, 400, 'Responds with 400 status');
+      t.ok(res.text.includes(message), `Page contains error message '${message}'`);
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
+
 test('/groups get', (t) => {
   supertest(app)
     .get('/groups')

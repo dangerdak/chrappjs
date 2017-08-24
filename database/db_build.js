@@ -14,6 +14,7 @@ const build = (cb) => {
   });
 }
 
+/* instanbul ignore if */
 if (require === module) {
   build();
 }

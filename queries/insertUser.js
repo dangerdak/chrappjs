@@ -9,6 +9,7 @@ const insertUser = (name, email, hashedPassword, cb) => {
   });
 };
 
+/* istanbul ignore if*/
 if (require.main === module) {
   insertUser('lenny', 'lenny@gmail.com', 'pword', console.log);
 }
