@@ -1,7 +1,14 @@
 <section>
-    <ul>
-        <li>group1</li>
-        <li>group2</li>
-        <li>group3</li>
-    </ul>
+    {{#if groups}}
+        <ul>
+            {{#each groups}}
+            <li>{{this.name}}</li>
+            {{/each}}
+        </ul>
+        <a href="/create-group">New group</a>
+    {{else}}
+        <p>Your Christmas is looking pretty lonely!
+        Why don't you <a href="/create-group">create a new group</a>.
+        </p>
+    {{/if}}
 </section>

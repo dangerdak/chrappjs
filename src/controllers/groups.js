@@ -1,3 +1,3 @@
 exports.get = (req, res) => {
-  res.render('groups', {pageTitle: 'Your Groups'});
+  res.render('groups', {pageTitle: 'Your Groups', groups: []});
 }
