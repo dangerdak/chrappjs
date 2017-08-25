@@ -46,3 +46,14 @@ test('Password confirmation validation', (t) => {
   t.throws(() => validate.validateConfirmPassword('hi', 'he'), /Passwords must match/, 'Confirmation different to password provides correct error message');
   t.end();
 });
+
+test('Date validation', (t) => {
+  t.throws(() => validate.validateDeadline('01-05-2020'), /Date must have format yyyy-mm-dd/, 'Date in incorrect format throws error');
+  t.throws(() => validate.validateDeadline('2000-01-01'), /Date must be in the future/, 'Entering a past date throws an error');
+  t.end();
+});
+
+test('Budget validation', (t) => {
+  t.throws(() => validate.validateBudget(-1), /Budget must be a positive integer/, 'Negative budget throws error');
+  t.end();
+});
