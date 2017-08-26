@@ -8,7 +8,6 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
   const formData = req.body;
   if (!formData.is_assigned) formData.is_assigned = false;
-  console.log(typeof formData.budget);
   const validated = validateGroup(formData);
 
   if (!validated.isValid) {
@@ -20,7 +19,6 @@ exports.post = (req, res) => {
     });
   }
   else {
-    console.log(req.session.user_id);
     insertGroup(req.session.user_id, formData)
       .then(idObj => {
         res.redirect('groups');

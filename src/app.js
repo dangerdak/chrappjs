@@ -39,7 +39,7 @@ app.use(session({
     httpOnly: true,
   }
 }));
-app.use('/groups', requireLogin);
+app.use(['/groups', '/create-group'], requireLogin);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(controllers);
 

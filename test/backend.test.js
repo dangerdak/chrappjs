@@ -16,24 +16,24 @@ test('/login get', (t) => {
     });
 });
 
-//test('/login post for user who doesn\'t exist', (t) => {
-  //// needs db setup/reset 
-  //// as it depends on 'getUser' db query not erroring with code 500
-  //dbReset(() => {
-    //supertest(app)
-      //.post('/login')
-      //.type('form')
-      //.send({ email: 'd@z', password: 'hihi' })
-      //.expect(400)
-      //.end((err, res) => {
-        //const title = '<h2>Login</h2>';
-        //t.equals(res.status, 400, 'Responds with 400 status');
-        //t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
-        //t.ok(res.text.includes(title), `Page contains string ${title}`);
-        //t.end();
-      //});
-  //});
-//});
+test('/login post for user who doesn\'t exist', (t) => {
+  // needs db setup/reset 
+  // as it depends on 'getUser' db query not erroring with code 500
+  dbReset(() => {
+    supertest(app)
+      .post('/login')
+      .type('form')
+      .send({ email: 'd@z', password: 'hihi' })
+      .expect(400)
+      .end((err, res) => {
+        const title = '<h2>Login</h2>';
+        t.equals(res.status, 400, 'Responds with 400 status');
+        t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
+        t.ok(res.text.includes(title), `Page contains string ${title}`);
+        t.end();
+      });
+  });
+});
 
 test('/login post invalid data', (t) => {
   supertest(app)
@@ -78,14 +78,26 @@ test('POST to /register with invalid data', (t) => {
     });
 });
 
-test('/groups get', (t) => {
+test('GET /groups without authentication', (t) => {
   supertest(app)
     .get('/groups')
-    .expect(200)
+    .expect(401)
     .end((err, res) => {
       const title = '<h2>Login</h2>';
-      t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes(title), `Page redirects to ${title} when not logged in`);
+      t.equals(res.status, 401, 'Responds with 401 status');
+      t.ok(res.text.includes(title), `Page redirects to ${title}`);
+      t.end();
+    });
+});
+
+test('GET /create-group without authentication', (t) => {
+  supertest(app)
+    .get('/create-group')
+    .expect(401)
+    .end((err, res) => {
+      const title = '<h2>Login</h2>';
+      t.equals(res.status, 401, 'Responds with 401 status');
+      t.ok(res.text.includes(title), `Page redirects to ${title}`);
       t.end();
     });
 });
