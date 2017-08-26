@@ -27,7 +27,8 @@ exports.post = (req, res) => {
           // TODO try/catch for use of sign function?
           const hashedPassword = sign(formData.password);
           insertUser(formData.name, formData.email, hashedPassword)
-            .then(() => {
+            .then(userId => {
+              req.session.user_id = userId;
               res.redirect('groups');
             })
             .catch(err => {

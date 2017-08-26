@@ -47,9 +47,9 @@ const validateDeadline = (date) => {
   let currentDate = new Date();
   let inputDate = new Date(date);
   currentDate.setHours(0, 0, 0, 0);
-  inputDate.setHours(0, 0, 0, 0)
+  inputDate.setHours(0, 0, 0, 0);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    throw new TypeError('Date must have format yyyy-mm-dd');
+    throw new TypeError(`Date must have format yyyy-mm-dd but you entered ${date}`);
   }
   if (inputDate.getTime() < currentDate.getTime()) {
     throw new TypeError('Date must be in the future');
@@ -90,7 +90,7 @@ const validateGroup = (input) => {
   try {
     validateName(input.name);
     validateDescription(input.description);
-    validateDeadline(input.deaadline);
+    validateDeadline(input.deadline);
     validateBudget(input.budget);
     return { isValid: true };
   }

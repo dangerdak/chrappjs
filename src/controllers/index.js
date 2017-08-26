@@ -13,5 +13,7 @@ router.get('/create-group', createGroup.get);
 
 router.post('/register', register.post);
 router.post('/login', login.post);
+router.post('/create-group', createGroup.post);
+
 
 module.exports = router;
