@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
 const getUser = require('../../queries/getUser');
 const { validateLogin } = require('./validate');
+const checkLogin = require('../lib/checkLogin');
 
 exports.get = (req, res) => {
   res.render('login', { pageTitle: 'Login'});
@@ -16,15 +16,9 @@ exports.post = (req, res) => {
       formData,
     });
   } else {
-    getUser(formData.email).then(userData => {
+    checkLogin(formData.email, formData.password)
+      .then(userData => {
       if (userData) {
-        return Promise.all([userData, bcrypt.compare(formData.password, userData.password)])
-      }
-      else {
-        return [false, false];
-      }
-    }).then(([userData, match]) => {
-      if (match) {
         // login successful
         req.session.user_id = userData.id;
         res.redirect(req.session.destination || 'groups');
@@ -38,7 +32,6 @@ exports.post = (req, res) => {
       }
     })
     .catch(err => {
-      console.log(err);
       res.status(500).render('error', {
         layout: 'error',
         statusCode: 500,

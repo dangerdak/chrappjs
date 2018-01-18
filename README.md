@@ -43,5 +43,7 @@ _A Secret Santa App_
 ## Resources
 * [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/)
 * [Using pg-promises](https://stackoverflow.com/a/44737312/3652070)
+* [Mistakes with
+  promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
 * [Bcrypt for password
   storage](https://drive.google.com/file/d/0BxXF_LZcFnS5ODM0dElWYmtmMWc/view)
