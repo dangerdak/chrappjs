@@ -2,47 +2,45 @@ const test = require('tape');
 const fs = require('fs');
 const path = require('path');
 
-const dbReset = require('../database/db_build');
 const dbConnection = require('../database/db_connection');
 const insertUser = require('../queries/insertUser');
 const getUser = require('../queries/getUser');
 
-test('Insert user into database', (t) => {
-  dbReset()
-    .then(() => {
-      return insertUser('james', 'james@gmail.com', 'jammy')
-    })
-    .then(id => {
-      t.equal(typeof id, 'number', 'Returns the user\'s id');
-      t.end();
-    })
-    .catch(err => {
-      console.log(err);
-    })
-});
+const QueryFile = require('pg-promise').QueryFile;
+const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
+const dbReset = require('../database/db_build').bind(null, seedFile);
 
-test('Get user from database based on email', (t) => {
-  dbReset()
-    .then(() => {
-      return insertUser('james', 'james@gmail.com', 'jammy')
-    })
-    .then(() => {
-      return getUser('james@gmail.com');
-    })
-    .then(result => {
-      const expected = {
-        name: 'james',
-        email: 'james@gmail.com',
-        pword: 'jammy'
-      };
-      return Object.keys(expected).forEach((key) => {
-        t.equal(result.key, expected.key, `Returns object with same ${key}`);
-      });
-    })
-    .then(() => {
-      t.end();
-    })
-    .catch(err => {
-      console.log(err);
-    })
+dbReset().then(() => {
+  test('Insert user into database', (t) => {
+    insertUser('james', 'james@gmail.com', 'jammy')
+      .then(id => {
+        t.equal(typeof id, 'number', 'Returns the user\'s id');
+        t.end();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(dbReset);
+  });
+
+  test('Get user from database based on email', (t) => {
+    getUser('sam@gmail.com')
+      .then(result => {
+        const expected = {
+          name: 'sam',
+          email: 'sam@gmail.com',
+          password: '$2a$10$CEicRuoB3hvCnlDx9Of/deXIiRInjoRhYuC9VKdox7n0zVXMbzJb2'
+        };
+        return Object.keys(expected).forEach((key) => {
+          t.equal(result.key, expected.key, `Returns object with same ${key}`);
+        });
+      })
+      .then(() => {
+        t.end();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(dbReset);
+  });
 });
