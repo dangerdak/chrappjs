@@ -1,8 +1,10 @@
-const { sign } = require('./passwordModule')();
+const bcrypt = require('bcrypt');
 const insertUser = require('../../queries/insertUser');
 const getUser = require('../../queries/getUser');
 
 const { validateRegistration } = require('./validate');
+
+const saltRounds = 10;
 
 exports.get = (req, res) => {
   res.render('register', { pageTitle: 'Register'});
@@ -24,19 +26,19 @@ exports.post = (req, res) => {
       .then(existingUser => {
         if (!existingUser) {
           // insert user
-          // TODO try/catch for use of sign function?
-          const hashedPassword = sign(formData.password);
-          insertUser(formData.name, formData.email, hashedPassword)
-            .then(() => {
-              res.redirect('groups');
-            })
-            .catch(err => {
-              res.status(500).render('error', {
-                layout: 'error',
-                statusCode: 500,
-                errorMessage: 'Internal server error',
-              });
+          bcrypt.hash(formData.password, saltRounds).then((hashedPassword) => {
+            return insertUser(formData.name, formData.email, hashedPassword);
+          }).then(() => {
+            res.redirect('groups');
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).render('error', {
+              layout: 'error',
+              statusCode: 500,
+              errorMessage: 'Internal server error',
             });
+          });
         }
         else {
           // email already in db
