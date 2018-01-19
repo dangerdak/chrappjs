@@ -12,6 +12,11 @@ _A Secret Santa App_
    * Database queries (insert user, get user)
    * Also write tests for database queries
 3. Link login and registration pages to database
+4. Add groups to database
+   - [ ] Display groups on groups page
+   - [ ] Ability to create groups
+   - [ ] " edit groups
+   - [ ] Invite people
 
 ## Things I Learnt
 * travis 'install' stage is where npm install happens - so be careful if
@@ -47,3 +52,4 @@ _A Secret Santa App_
   promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
 * [Bcrypt for password
   storage](https://drive.google.com/file/d/0BxXF_LZcFnS5ODM0dElWYmtmMWc/view)
+* [Many to many relationships in PostgreSQL](https://stackoverflow.com/questions/9789736/how-to-implement-a-many-to-many-relationship-in-postgresql)

@@ -2,13 +2,13 @@ const test = require('tape');
 const fs = require('fs');
 const path = require('path');
 
-const dbConnection = require('../database/db_connection');
-const insertUser = require('../queries/insertUser');
-const getUser = require('../queries/getUser');
-
 const QueryFile = require('pg-promise').QueryFile;
 const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
 const dbReset = require('../database/db_build').bind(null, seedFile);
+
+const insertUser = require('../queries/insertUser');
+const getUser = require('../queries/getUser');
+const insertGroup = require('../queries/insertGroup');
 
 dbReset().then(() => {
   test('Insert user into database', (t) => {
@@ -20,7 +20,7 @@ dbReset().then(() => {
       .catch(err => {
         console.log(err);
       })
-      .then(dbReset);
+      .then(() => dbReset());
   });
 
   test('Get user from database based on email', (t) => {
@@ -41,6 +41,32 @@ dbReset().then(() => {
       .catch(err => {
         console.log(err);
       })
-      .then(dbReset);
+      .then(() => dbReset());
+  });
+
+  test('Insert group into database', (t) => {
+    insertUser('james', 'james@gmail.com', 'jammy')
+      .then(userId => {
+        const today = new Date();
+        const futureDate = `${today.getFullYear()+1}-${today.getMonth()+1}-${today.getDate()}`;
+
+        const groupInfo = {
+          name: 'Crabbies',
+          description: 'Xmas pressies for all',
+          budget: 80,
+          is_assigned: false,
+          deadline: futureDate,
+        };
+        return insertGroup(userId, groupInfo)
+      })
+      .then(idObj => {
+        t.equal(typeof idObj.group_id, 'number', 'Returns an object containing the group\'s id');
+        t.equal(typeof idObj.user_id, 'number', 'Returns an object containing the user\'s id');
+        t.end();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(() => dbReset());
   });
 });

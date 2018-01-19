@@ -4,7 +4,7 @@ const supertest = require('supertest');
 const dbReset = require('../database/db_build');
 const app = require('./../src/app');
 
-test('/login get', (t) => {
+test('/login GET', (t) => {
   supertest(app)
     .get('/login')
     .expect(200)
@@ -16,26 +16,7 @@ test('/login get', (t) => {
     });
 });
 
-//test('/login post for user who doesn\'t exist', (t) => {
-  //// needs db setup/reset 
-  //// as it depends on 'getUser' db query not erroring with code 500
-  //dbReset(() => {
-    //supertest(app)
-      //.post('/login')
-      //.type('form')
-      //.send({ email: 'd@z', password: 'hihi' })
-      //.expect(400)
-      //.end((err, res) => {
-        //const title = '<h2>Login</h2>';
-        //t.equals(res.status, 400, 'Responds with 400 status');
-        //t.ok(res.text.includes('Incorrect email or password'), 'Page contains correct error message');
-        //t.ok(res.text.includes(title), `Page contains string ${title}`);
-        //t.end();
-      //});
-  //});
-//});
-
-test('/login post invalid data', (t) => {
+test('/login POST invalid data', (t) => {
   supertest(app)
     .post('/login')
     .type('form')
@@ -126,14 +107,101 @@ test('POST to /register with existing user', (t) => {
     });
 });
 
-test('/groups get', (t) => {
+test('GET /groups without authentication', (t) => {
   supertest(app)
     .get('/groups')
-    .expect(200)
+    .expect(401)
     .end((err, res) => {
       const title = '<h2>Login</h2>';
-      t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes(title), `Page redirects to ${title} when not logged in`);
+      t.equals(res.status, 401, 'Responds with 401 status');
+      t.ok(res.text.includes(title), `Renders page with title ${title}`);
       t.end();
     });
+});
+
+test('GET /create-group without authentication', (t) => {
+  supertest(app)
+    .get('/create-group')
+    .expect(401)
+    .end((err, res) => {
+      const title = '<h2>Login</h2>';
+      t.equals(res.status, 401, 'Responds with 401 status');
+      t.ok(res.text.includes(title), `Renders page with title ${title}`);
+      t.end();
+    });
+});
+
+test('/create-group GET with authentication', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      supertest(app)
+        .get('/create-group')
+        .set('Cookie', cookies)
+        .expect(200)
+        .end((err, res) => {
+          const title = '<h2>Create A Group</h2>';
+          t.equals(res.status, 200, 'Responds with 200 status');
+          t.ok(res.text.includes(title), `Page contains title ${title}`);
+          t.end();
+        })
+    })
+});
+
+test('/create-group POST with valid data', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      const input = {
+        name: 'superxmas',
+        description: 'best xmas ever',
+        budget: 10,
+        deadline: '2999-12-25',
+      };
+      supertest(app)
+        .post('/create-group')
+        .type('form')
+        .send(input)
+        .set('Cookie', cookies)
+        .redirects()
+        .end((err, res) => {
+          const title = '<h2>Your Groups</h2>';
+          t.ok(res.text.includes(title), `Redirects to ${title}`);
+          t.end();
+        })
+    })
+});
+
+test('/create-group POST with invalid data', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      const input = {
+        name: 'superxmas',
+        description: 'best xmas ever',
+        budget: 10,
+        deadline: '2000-12-25',
+      };
+      supertest(app)
+        .post('/create-group')
+        .type('form')
+        .send(input)
+        .set('Cookie', cookies)
+        .end((err, res) => {
+          const title = '<h2>Create A Group</h2>';
+          t.equal(res.status, 400, 'Responds with status 400');
+          t.ok(res.text.includes(title), `Renders page with ${title}`);
+          t.ok(res.text.includes('Date must be in the future'), `Renders error message`);
+          t.end();
+        })
+    })
 });

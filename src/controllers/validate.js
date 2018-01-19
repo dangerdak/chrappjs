@@ -5,9 +5,6 @@ const validateName = (name) => {
   if (typeof name !== 'string') {
     throw new TypeError('Name must be a string');
   }
-  if (/\W/.test(name)) {
-    throw new TypeError('Name must contain only alphanumeric characters');
-  }
 };
 
 const validateEmail = (email) => {
@@ -37,6 +34,32 @@ const validateConfirmPassword = (password, confirmPassword) => {
   }
 };
 
+const validateDescription = (description) => {
+  if (description.length > 500) {
+    throw new TypeError('Description must be less than 500 characters');
+  }
+};
+
+const validateDeadline = (date) => {
+  let currentDate = new Date();
+  let inputDate = new Date(date);
+  currentDate.setHours(0, 0, 0, 0);
+  inputDate.setHours(0, 0, 0, 0);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    throw new TypeError(`Date must have format yyyy-mm-dd but you entered ${date}`);
+  }
+  if (inputDate.getTime() < currentDate.getTime()) {
+    throw new TypeError('Date must be in the future');
+  }
+};
+
+const validateBudget = (budget) => {
+  budget = +budget;
+  if (budget < 0 || Math.floor(budget) !== budget) {
+    throw new TypeError('Budget must be a positive integer');
+  }
+};
+
 const validateRegistration = (input) => {
   try {
     validateName(input.name);
@@ -57,7 +80,20 @@ const validateLogin = (input) => {
     return { isValid: true };
   }
   catch (e) {
-    return {isValid: false, message: e.message };
+    return { isValid: false, message: e.message };
+  }
+};
+
+const validateGroup = (input) => {
+  try {
+    validateName(input.name);
+    validateDescription(input.description);
+    validateDeadline(input.deadline);
+    validateBudget(input.budget);
+    return { isValid: true };
+  }
+  catch (e) {
+    return { isValid: false, message: e.message };
   }
 };
 
@@ -66,6 +102,10 @@ module.exports = {
   validateEmail,
   validatePassword,
   validateConfirmPassword,
+  validateDescription,
+  validateDeadline,
+  validateBudget,
   validateRegistration,
   validateLogin,
+  validateGroup,
 };

@@ -25,7 +25,6 @@ test('Login validation', (t) => {
 test('Name validation', (t) => {
   t.throws(() => validate.validateName(''), /Name is required/, 'Falsey name has correct error message');
   t.throws(() => validate.validateName(5), /Name must be a string/, 'Number value has correct error message');
-  t.throws(() => validate.validateName('5332*$'), /Name must contain only alphanumeric characters/, 'Special characters in provides correct error message');
   t.end();
 });
 
@@ -44,5 +43,23 @@ test('Password validation', (t) => {
 test('Password confirmation validation', (t) => {
   t.throws(() => validate.validateConfirmPassword('', ''), /Password confirmation is required/, 'Missing password confirmation has correct error message');
   t.throws(() => validate.validateConfirmPassword('hi', 'he'), /Passwords must match/, 'Confirmation different to password provides correct error message');
+  t.end();
+});
+
+test('Date validation', (t) => {
+  t.throws(() => validate.validateDeadline('01-05-2020'), /Date must have format yyyy-mm-dd/, 'Date in incorrect format throws error');
+  t.throws(() => validate.validateDeadline('2000-01-01'), /Date must be in the future/, 'Entering a past date throws an error');
+  t.end();
+});
+
+test('Budget validation', (t) => {
+  t.throws(() => validate.validateBudget(-1), /Budget must be a positive integer/, 'Negative budget throws error');
+  t.end();
+});
+
+test('validateGroup', (t) => {
+  let input = { name: 'xmas', description: 'Christmas in London', deadline: '2900-01-01', budget: 50 };
+  let actual = validate.validateGroup(input).isValid;
+  t.ok(actual, 'Returns object with isValid set to true if input is valid');
   t.end();
 });
