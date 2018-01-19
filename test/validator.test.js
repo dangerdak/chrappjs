@@ -57,3 +57,10 @@ test('Budget validation', (t) => {
   t.throws(() => validate.validateBudget(-1), /Budget must be a positive integer/, 'Negative budget throws error');
   t.end();
 });
+
+test('validateGroup', (t) => {
+  let input = { name: 'xmas', description: 'Christmas in London', deadline: '2900-01-01', budget: 50 };
+  let actual = validate.validateGroup(input).isValid;
+  t.ok(actual, 'Returns object with isValid set to true if input is valid');
+  t.end();
+});
