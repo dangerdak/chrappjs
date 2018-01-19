@@ -1,6 +1,5 @@
-const { sign } = require('./passwordModule')();
-const insertUser = require('../../queries/insertUser');
 const getUser = require('../../queries/getUser');
+const createUser = require('../lib/createUser');
 
 const { validateRegistration } = require('./validate');
 
@@ -23,20 +22,18 @@ exports.post = (req, res) => {
     getUser(formData.email)
       .then(existingUser => {
         if (!existingUser) {
-          // insert user
-          // TODO try/catch for use of sign function?
-          const hashedPassword = sign(formData.password);
-          insertUser(formData.name, formData.email, hashedPassword)
-            .then(() => {
-              res.redirect('groups');
-            })
-            .catch(err => {
-              res.status(500).render('error', {
-                layout: 'error',
-                statusCode: 500,
-                errorMessage: 'Internal server error',
-              });
+          createUser(formData.name, formData.email, formData.password)
+          .then(userId => {
+            req.session.user_id = userId;
+            res.redirect('groups');
+          })
+          .catch(err => {
+            res.status(500).render('error', {
+              layout: 'error',
+              statusCode: 500,
+              errorMessage: 'Internal server error',
             });
+          });
         }
         else {
           // email already in db

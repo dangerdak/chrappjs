@@ -1,6 +1,6 @@
-const { sign, validate } = require('./passwordModule')();
 const getUser = require('../../queries/getUser');
 const { validateLogin } = require('./validate');
+const checkLogin = require('../lib/checkLogin');
 
 exports.get = (req, res) => {
   res.render('login', { pageTitle: 'Login'});
@@ -15,22 +15,20 @@ exports.post = (req, res) => {
       messages: [{content: validatedLogin.message, error: true}],
       formData,
     });
-  }
-  else {
-    getUser(formData.email)
-    .then(userData => {
-      if (!userData || sign(formData.password) !== userData.password) {
+  } else {
+    checkLogin(formData.email, formData.password)
+      .then(userData => {
+      if (userData) {
+        // login successful
+        req.session.user_id = userData.id;
+        res.redirect(req.session.destination || 'groups');
+      } else {
         // user doesn't exist or incorrect password
         res.status(400).render('login', {
           pageTitle: 'Login',
           messages: [{content: 'Incorrect email or password', error: true}],
           formData,
         });
-      }
-      else {
-        // login successful
-        req.session.user_id = userData.id;
-        res.redirect(req.session.destination || 'groups');
       }
     })
     .catch(err => {
