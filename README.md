@@ -41,8 +41,15 @@ _A Secret Santa App_
     .send({ email: 'my@email.com', password: 'top secret' })
     .end(blah blah blah);
   ```
+* When hashing passwords, use the `bcrypt` module rather than inbuilt `crypto`.
+  `bcrypt` is designed for hashing passwords and is more computationally
+  expensive (harder to brute force), and a work factor can be provided so it can be made more expensive
+  as computers get faster.
 ## Resources
 * [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/)
 * [Using pg-promises](https://stackoverflow.com/a/44737312/3652070)
-* [Many to many relationships in
-  PostgreSQL](https://stackoverflow.com/questions/9789736/how-to-implement-a-many-to-many-relationship-in-postgresql)
+* [Mistakes with
+  promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
+* [Bcrypt for password
+  storage](https://drive.google.com/file/d/0BxXF_LZcFnS5ODM0dElWYmtmMWc/view)
+* [Many to many relationships in PostgreSQL](https://stackoverflow.com/questions/9789736/how-to-implement-a-many-to-many-relationship-in-postgresql)

@@ -9,11 +9,14 @@
   "scripts": {
     "test": "tape test/*.test.js | tap-spec",
     "start:watch": "nodemon src/index.js",
-    "coverage": "nyc npm test && nyc report --reporter=html && nyc report --reporter=text-lcov > coverage.lcov"
+    "coverage": "nyc npm test && nyc report --reporter=html && nyc report --reporter=text-lcov > coverage.lcov",
+    "db:seed": "node database/db_build.js --seed",
+    "db:build": "node database/db_build.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "connect-pg-simple": "^4.2.1",
     "express": "^4.15.4",
