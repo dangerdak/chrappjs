@@ -6,7 +6,6 @@ const QueryFile = require('pg-promise').QueryFile;
 const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
 const dbReset = require('../database/db_build').bind(null, seedFile);
 
-const dbConnection = require('../database/db_connection');
 const insertUser = require('../queries/insertUser');
 const getUser = require('../queries/getUser');
 const insertGroup = require('../queries/insertGroup');
@@ -49,7 +48,7 @@ dbReset().then(() => {
     insertUser('james', 'james@gmail.com', 'jammy')
       .then(userId => {
         const today = new Date();
-        const futureDate = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()+1}`;
+        const futureDate = `${today.getFullYear()+1}-${today.getMonth()+1}-${today.getDate()}`;
 
         const groupInfo = {
           name: 'Crabbies',
