@@ -24,7 +24,6 @@ exports.post = (req, res) => {
         res.redirect(303, 'groups');
       })
       .catch(err => {
-        console.log(err);
         res.status(500).render('error', {
           layout: 'error',
           statusCode: 500,

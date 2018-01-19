@@ -177,3 +177,31 @@ test('/create-group POST with valid data', (t) => {
         })
     })
 });
+
+test('/create-group POST with invalid data', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      const input = {
+        name: 'superxmas',
+        description: 'best xmas ever',
+        budget: 10,
+        deadline: '2000-12-25',
+      };
+      supertest(app)
+        .post('/create-group')
+        .type('form')
+        .send(input)
+        .set('Cookie', cookies)
+        .end((err, res) => {
+          const title = '<h2>Create A Group</h2>';
+          t.equal(res.status, 400, 'Responds with status 400');
+          t.ok(res.text.includes(title), `Renders page with ${title}`);
+          t.ok(res.text.includes('Date must be in the future'), `Renders error message`);
+          t.end();
+        })
+    })
+});
