@@ -20,7 +20,7 @@ dbReset().then(() => {
       .catch(err => {
         console.log(err);
       })
-      .then(dbReset);
+      .then(() => dbReset());
   });
 
   test('Get user from database based on email', (t) => {
@@ -41,7 +41,7 @@ dbReset().then(() => {
       .catch(err => {
         console.log(err);
       })
-      .then(dbReset);
+      .then(() => dbReset());
   });
 
   test('Insert group into database', (t) => {
@@ -67,6 +67,6 @@ dbReset().then(() => {
       .catch(err => {
         console.log(err);
       })
-      .then(dbReset);
+      .then(() => dbReset());
   });
 });
