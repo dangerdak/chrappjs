@@ -57,6 +57,7 @@ const validateDeadline = (date) => {
 };
 
 const validateBudget = (budget) => {
+  budget = +budget;
   if (budget < 0 || Math.floor(budget) !== budget) {
     throw new TypeError('Budget must be a positive integer');
   }

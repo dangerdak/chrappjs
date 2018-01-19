@@ -21,7 +21,7 @@ exports.post = (req, res) => {
   else {
     insertGroup(req.session.user_id, formData)
       .then(idObj => {
-        res.redirect('groups');
+        res.redirect(303, 'groups');
       })
       .catch(err => {
         console.log(err);

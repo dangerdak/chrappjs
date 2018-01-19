@@ -114,7 +114,7 @@ test('GET /groups without authentication', (t) => {
     .end((err, res) => {
       const title = '<h2>Login</h2>';
       t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Page redirects to ${title}`);
+      t.ok(res.text.includes(title), `Renders page with title ${title}`);
       t.end();
     });
 });
@@ -126,7 +126,54 @@ test('GET /create-group without authentication', (t) => {
     .end((err, res) => {
       const title = '<h2>Login</h2>';
       t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Page redirects to ${title}`);
+      t.ok(res.text.includes(title), `Renders page with title ${title}`);
       t.end();
     });
+});
+
+test('/create-group GET with authentication', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      supertest(app)
+        .get('/create-group')
+        .set('Cookie', cookies)
+        .expect(200)
+        .end((err, res) => {
+          const title = '<h2>Create A Group</h2>';
+          t.equals(res.status, 200, 'Responds with 200 status');
+          t.ok(res.text.includes(title), `Page contains title ${title}`);
+          t.end();
+        })
+    })
+});
+
+test('/create-group POST with valid data', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .then(response => {
+      const cookies = response.headers['set-cookie'];
+      const input = {
+        name: 'superxmas',
+        description: 'best xmas ever',
+        budget: 10,
+        deadline: '2999-12-25',
+      };
+      supertest(app)
+        .post('/create-group')
+        .type('form')
+        .send(input)
+        .set('Cookie', cookies)
+        .redirects()
+        .end((err, res) => {
+          const title = '<h2>Your Groups</h2>';
+          t.ok(res.text.includes(title), `Redirects to ${title}`);
+          t.end();
+        })
+    })
 });

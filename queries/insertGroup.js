@@ -18,7 +18,7 @@ const insertGroup = (userId, groupObj) => {
     groupObj.name,
     groupObj.description,
     groupObj.deadline,
-    groupObj.budget,
+    +groupObj.budget,
     groupObj.is_assigned
   ];
   return dbConnection.one(sqlInsertGroup, values)
