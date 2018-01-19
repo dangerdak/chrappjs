@@ -22,18 +22,11 @@ exports.post = (req, res) => {
     getUser(formData.email)
       .then(existingUser => {
         if (!existingUser) {
-          createUser(formData.name, formData.email, formData.password)
-          .then(userId => {
-            req.session.user_id = userId;
-            res.redirect('groups');
-          })
-          .catch(err => {
-            res.status(500).render('error', {
-              layout: 'error',
-              statusCode: 500,
-              errorMessage: 'Internal server error',
+          return createUser(formData.name, formData.email, formData.password)
+            .then(userId => {
+              req.session.user_id = userId;
+              res.redirect('groups');
             });
-          });
         }
         else {
           // email already in db
