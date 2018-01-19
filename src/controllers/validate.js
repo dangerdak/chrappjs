@@ -5,9 +5,6 @@ const validateName = (name) => {
   if (typeof name !== 'string') {
     throw new TypeError('Name must be a string');
   }
-  if (/\W/.test(name)) {
-    throw new TypeError('Name must contain only alphanumeric characters');
-  }
 };
 
 const validateEmail = (email) => {

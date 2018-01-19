@@ -25,7 +25,6 @@ test('Login validation', (t) => {
 test('Name validation', (t) => {
   t.throws(() => validate.validateName(''), /Name is required/, 'Falsey name has correct error message');
   t.throws(() => validate.validateName(5), /Name must be a string/, 'Number value has correct error message');
-  t.throws(() => validate.validateName('5332*$'), /Name must contain only alphanumeric characters/, 'Special characters in provides correct error message');
   t.end();
 });
 
