@@ -1,10 +1,7 @@
-const bcrypt = require('bcrypt');
-const insertUser = require('../../queries/insertUser');
 const getUser = require('../../queries/getUser');
+const createUser = require('../lib/createUser');
 
 const { validateRegistration } = require('./validate');
-
-const saltRounds = 10;
 
 exports.get = (req, res) => {
   res.render('register', { pageTitle: 'Register'});
@@ -25,10 +22,8 @@ exports.post = (req, res) => {
     getUser(formData.email)
       .then(existingUser => {
         if (!existingUser) {
-          // insert user
-          bcrypt.hash(formData.password, saltRounds).then((hashedPassword) => {
-            return insertUser(formData.name, formData.email, hashedPassword);
-          }).then(userId => {
+          createUser(formData.name, formData.email, formData.password)
+          .then(userId => {
             req.session.user_id = userId;
             res.redirect('groups');
           })
