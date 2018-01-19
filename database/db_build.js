@@ -11,7 +11,7 @@ const build = (queryFile) => {
     .catch(console.log);
 }
 
-/* instanbul ignore if */
+/* istanbul ignore if */
 if (require.main === module) {
   let fileName;
   if (process.argv[2] === '--seed') {
