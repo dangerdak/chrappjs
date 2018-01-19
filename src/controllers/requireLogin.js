@@ -6,8 +6,7 @@ const requireLogin = (req, res, next) => {
       pageTitle: 'Login',
       messages: [{ content: 'Please login to continue', error: true }],
     });
-  }
-  else {
+  } else {
     next('route');
   }
 };

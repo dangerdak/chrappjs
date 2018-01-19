@@ -4,7 +4,7 @@ const createUser = require('../lib/createUser');
 const { validateRegistration } = require('./validate');
 
 exports.get = (req, res) => {
-  res.render('register', { pageTitle: 'Register'});
+  res.render('register', { pageTitle: 'Register' });
 };
 
 exports.post = (req, res) => {
@@ -14,30 +14,27 @@ exports.post = (req, res) => {
     // invalid input
     res.status(400).render('register', {
       pageTitle: 'Register',
-      messages: [{content: validatedRegistration.message, error: true}],
+      messages: [{ content: validatedRegistration.message, error: true }],
       formData,
     });
-  }
-  else {
+  } else {
     getUser(formData.email)
-      .then(existingUser => {
+      .then((existingUser) => {
         if (!existingUser) {
           return createUser(formData.name, formData.email, formData.password)
-            .then(userId => {
+            .then((userId) => {
               req.session.user_id = userId;
               res.redirect('groups');
             });
         }
-        else {
-          // email already in db
-          res.status(400).render('register', {
-            pageTitle: 'Register',
-            messages: [{content: `Account already exists for ${formData.email}`, error: true}],
-            formData,
-          });
-        }
+        // email already in db
+        return res.status(400).render('register', {
+          pageTitle: 'Register',
+          messages: [{ content: `Account already exists for ${formData.email}`, error: true }],
+          formData,
+        });
       })
-      .catch(err => {
+      .catch(() => {
         res.status(500).render('error', {
           layout: 'error',
           statusCode: 500,

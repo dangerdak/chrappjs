@@ -1,15 +1,12 @@
-const fs = require('fs');
 const path = require('path');
 const dbConnection = require('./db_connection');
-const QueryFile = require('pg-promise').QueryFile;
+const { QueryFile } = require('pg-promise');
 
-const build = (queryFile) => {
-  return dbConnection.any(queryFile)
-    .then(() => {
-      console.log('Database build successful.');
-    })
-    .catch(console.log);
-}
+const build = queryFile => dbConnection.any(queryFile)
+  .then(() => {
+    console.log('Database build successful.');
+  })
+  .catch(console.log);
 
 /* istanbul ignore if */
 if (require.main === module) {

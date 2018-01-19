@@ -41,8 +41,8 @@ const validateDescription = (description) => {
 };
 
 const validateDeadline = (date) => {
-  let currentDate = new Date();
-  let inputDate = new Date(date);
+  const currentDate = new Date();
+  const inputDate = new Date(date);
   currentDate.setHours(0, 0, 0, 0);
   inputDate.setHours(0, 0, 0, 0);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -54,8 +54,8 @@ const validateDeadline = (date) => {
 };
 
 const validateBudget = (budget) => {
-  budget = +budget;
-  if (budget < 0 || Math.floor(budget) !== budget) {
+  const numberValue = +budget;
+  if (numberValue < 0 || Math.floor(numberValue) !== numberValue) {
     throw new TypeError('Budget must be a positive integer');
   }
 };
@@ -67,8 +67,7 @@ const validateRegistration = (input) => {
     validatePassword(input.password);
     validateConfirmPassword(input.password, input.confirmPassword);
     return { isValid: true };
-  }
-  catch (e) {
+  } catch (e) {
     return { isValid: false, message: e.message };
   }
 };
@@ -78,8 +77,7 @@ const validateLogin = (input) => {
     validateEmail(input.email);
     validatePassword(input.password);
     return { isValid: true };
-  }
-  catch (e) {
+  } catch (e) {
     return { isValid: false, message: e.message };
   }
 };
@@ -91,8 +89,7 @@ const validateGroup = (input) => {
     validateDeadline(input.deadline);
     validateBudget(input.budget);
     return { isValid: true };
-  }
-  catch (e) {
+  } catch (e) {
     return { isValid: false, message: e.message };
   }
 };

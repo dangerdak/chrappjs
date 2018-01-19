@@ -1,10 +1,11 @@
 const express = require('express');
-const router = express.Router();
 
 const login = require('./login');
 const register = require('./register');
 const groups = require('./groups');
 const createGroup = require('./createGroup');
+
+const router = express.Router();
 
 router.get('/login', login.get);
 router.get('/register', register.get);

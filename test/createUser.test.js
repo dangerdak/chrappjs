@@ -11,10 +11,10 @@ test('createUser', (t) => {
     password: 'password',
   };
   createUser(input.name, input.email, input.password)
-    .then(id => {
+    .then((id) => {
       t.equals(typeof id, 'number', 'Returns id of created user');
       return getUser(input.email);
-    }).then(userData => {
+    }).then((userData) => {
       t.notEqual(userData.password, input.password, 'Doesnt store plain text password');
     })
     .catch(console.log);
