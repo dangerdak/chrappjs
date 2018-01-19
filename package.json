@@ -18,10 +18,9 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
-    "connect-pg-simple": "^4.2.1",
+    "cookie-session": "^2.0.0-beta.3",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
-    "express-session": "^1.15.5",
     "pg": "^7.1.2",
     "pg-promise": "^6.5.1",
     "serve-favicon": "^2.4.3"
