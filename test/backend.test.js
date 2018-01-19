@@ -50,6 +50,38 @@ test('/login post invalid data', (t) => {
     });
 });
 
+test('/login POST user doesnt exist', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'dsalfhasldf@gmail.com', password: 'hihi' })
+    .expect(400)
+    .end((err, res) => {
+      const title = '<h2>Login</h2>';
+      const message = 'Incorrect email or password';
+      t.equals(res.status, 400, 'Responds with 400 status');
+      t.ok(res.text.includes('Incorrect email or password'), `Page contains message ${message}`);
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
+
+test('/login POST incorrect password', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'hihi' })
+    .expect(400)
+    .end((err, res) => {
+      const title = '<h2>Login</h2>';
+      const message = 'Incorrect email or password';
+      t.equals(res.status, 400, 'Responds with 400 status');
+      t.ok(res.text.includes('Incorrect email or password'), `Page contains message ${message}`);
+      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.end();
+    });
+});
+
 test('/register get', (t) => {
   supertest(app)
     .get('/register')
