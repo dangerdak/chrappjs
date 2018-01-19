@@ -28,11 +28,11 @@ exports.post = (req, res) => {
           // insert user
           bcrypt.hash(formData.password, saltRounds).then((hashedPassword) => {
             return insertUser(formData.name, formData.email, hashedPassword);
-          }).then(() => {
+          }).then(userId => {
+            req.session.user_id = userId;
             res.redirect('groups');
           })
           .catch(err => {
-            console.log(err);
             res.status(500).render('error', {
               layout: 'error',
               statusCode: 500,
