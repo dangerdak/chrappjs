@@ -1,7 +1,6 @@
 const test = require('tape');
 const supertest = require('supertest');
 
-const dbReset = require('../database/db_build');
 const app = require('./../src/app');
 
 test('/login GET', (t) => {
@@ -79,7 +78,12 @@ test('POST to /register with invalid data', (t) => {
   supertest(app)
     .post('/register')
     .type('form')
-    .send({ name: '', email: 'd@z.vom', password: 'hi', confirmPassword: 'hid' })
+    .send({
+      name: '',
+      email: 'd@z.vom',
+      password: 'hi',
+      confirmPassword: 'hid',
+    })
     .expect(400)
     .end((err, res) => {
       const title = '<h2>Register</h2>';
@@ -95,7 +99,12 @@ test('POST to /register with existing user', (t) => {
   supertest(app)
     .post('/register')
     .type('form')
-    .send({ name: 'sam', email: 'sam@gmail.com', password: 'hi', confirmPassword: 'hi' })
+    .send({
+      name: 'sam',
+      email: 'sam@gmail.com',
+      password: 'hi',
+      confirmPassword: 'hi',
+    })
     .expect(400)
     .end((err, res) => {
       const title = '<h2>Register</h2>';
@@ -136,7 +145,7 @@ test('/create-group GET with authentication', (t) => {
     .post('/login')
     .type('form')
     .send({ email: 'sam@gmail.com', password: 'password' })
-    .then(response => {
+    .then((response) => {
       const cookies = response.headers['set-cookie'];
       supertest(app)
         .get('/create-group')
@@ -147,8 +156,8 @@ test('/create-group GET with authentication', (t) => {
           t.equals(res.status, 200, 'Responds with 200 status');
           t.ok(res.text.includes(title), `Page contains title ${title}`);
           t.end();
-        })
-    })
+        });
+    });
 });
 
 test('/create-group POST with valid data', (t) => {
@@ -156,7 +165,7 @@ test('/create-group POST with valid data', (t) => {
     .post('/login')
     .type('form')
     .send({ email: 'sam@gmail.com', password: 'password' })
-    .then(response => {
+    .then((response) => {
       const cookies = response.headers['set-cookie'];
       const input = {
         name: 'superxmas',
@@ -174,8 +183,8 @@ test('/create-group POST with valid data', (t) => {
           const title = '<h2>Your Groups</h2>';
           t.ok(res.text.includes(title), `Redirects to ${title}`);
           t.end();
-        })
-    })
+        });
+    });
 });
 
 test('/create-group POST with invalid data', (t) => {
@@ -183,7 +192,7 @@ test('/create-group POST with invalid data', (t) => {
     .post('/login')
     .type('form')
     .send({ email: 'sam@gmail.com', password: 'password' })
-    .then(response => {
+    .then((response) => {
       const cookies = response.headers['set-cookie'];
       const input = {
         name: 'superxmas',
@@ -200,8 +209,8 @@ test('/create-group POST with invalid data', (t) => {
           const title = '<h2>Create A Group</h2>';
           t.equal(res.status, 400, 'Responds with status 400');
           t.ok(res.text.includes(title), `Renders page with ${title}`);
-          t.ok(res.text.includes('Date must be in the future'), `Renders error message`);
+          t.ok(res.text.includes('Date must be in the future'), 'Renders error message');
           t.end();
-        })
-    })
+        });
+    });
 });

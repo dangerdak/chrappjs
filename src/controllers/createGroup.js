@@ -3,7 +3,7 @@ const { validateGroup } = require('./validate.js');
 
 exports.get = (req, res) => {
   res.render('createGroup', { pageTitle: 'Create A Group' });
-}
+};
 
 exports.post = (req, res) => {
   const formData = req.body;
@@ -14,16 +14,14 @@ exports.post = (req, res) => {
     // invalid input
     res.status(400).render('createGroup', {
       pageTitle: 'Create A Group',
-      messages: [{content: validated.message, error: true}],
+      messages: [{ content: validated.message, error: true }],
       formData,
     });
-  }
-  else {
+  } else {
     insertGroup(req.session.user_id, formData)
-      .then(idObj => {
-        res.redirect(303, 'groups');
-      })
-      .catch(err => {
+      .then(() =>
+        res.redirect(303, 'groups'))
+      .catch(() => {
         res.status(500).render('error', {
           layout: 'error',
           statusCode: 500,

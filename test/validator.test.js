@@ -3,7 +3,12 @@ const test = require('tape');
 const validate = require('../src/controllers/validate');
 
 test('Registration validation', (t) => {
-  let input = { name: 'bob', email: 'd@d.com', password: 'd', confirmPassword: 'd' };
+  const input = {
+    name: 'bob',
+    email: 'd@d.com',
+    password: 'd',
+    confirmPassword: 'd',
+  };
   let actual = validate.validateRegistration(input).isValid;
   t.ok(actual, 'Returns object with isValid set to true if input is valid');
   input.name = 5;
@@ -13,7 +18,7 @@ test('Registration validation', (t) => {
 });
 
 test('Login validation', (t) => {
-  let input = { email: 'bob@g.com', password: 'd' };
+  const input = { email: 'bob@g.com', password: 'd' };
   let actual = validate.validateLogin(input).isValid;
   t.ok(actual, 'Returns object with isValid set to true if input is valid');
   input.email = 5;
@@ -58,8 +63,13 @@ test('Budget validation', (t) => {
 });
 
 test('validateGroup', (t) => {
-  let input = { name: 'xmas', description: 'Christmas in London', deadline: '2900-01-01', budget: 50 };
-  let actual = validate.validateGroup(input).isValid;
+  const input = {
+    name: 'xmas',
+    description: 'Christmas in London',
+    deadline: '2900-01-01',
+    budget: 50,
+  };
+  const actual = validate.validateGroup(input).isValid;
   t.ok(actual, 'Returns object with isValid set to true if input is valid');
   t.end();
 });

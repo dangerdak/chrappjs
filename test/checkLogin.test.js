@@ -3,8 +3,9 @@ const test = require('tape');
 const checkLogin = require('../src/lib/checkLogin');
 
 test('checkLogin', (t) => {
+  t.plan(4);
   checkLogin('sam@gmail.com', 'password')
-    .then(actual => {
+    .then((actual) => {
       const expected = {
         id: 1,
         name: 'sam',
@@ -16,16 +17,13 @@ test('checkLogin', (t) => {
     })
     .then(() =>
       checkLogin('samm@gmail.com', 'password'))
-    .then(actual => {
+    .then((actual) => {
       t.equal(actual, undefined, 'Returns undefined if email incorrect');
     })
     .then(() =>
       checkLogin('sam@gmail.com', 'password1'))
-    .then(actual => {
+    .then((actual) => {
       t.equal(actual, undefined, 'Returns undefined if password incorrect');
     })
-    .catch(console.log)
-    .then(() => {
-      t.end();
-    })
+    .catch(console.log);
 });
