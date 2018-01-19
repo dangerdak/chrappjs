@@ -6,10 +6,7 @@ const getGroups = (userId) => {
   return dbConnection.query(sqlGetGroups, [userId])
     .then(groups => {
       return groups;
-    })
-  .catch(err => {
-    console.log(err);
-  });
+    });
 };
 
 module.exports = getGroups;
