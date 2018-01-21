@@ -1,5 +1,5 @@
 const insertGroup = require('../../queries/insertGroup');
-const { validateGroup } = require('./validate.js');
+const { validateGroup } = require('../lib/validate.js');
 
 exports.get = (req, res) => {
   res.render('createGroup', { pageTitle: 'Create A Group' });
