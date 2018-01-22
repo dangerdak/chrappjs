@@ -1,41 +1,25 @@
 const { validateLogin } = require('../lib/validate');
 const checkLogin = require('../lib/checkLogin');
 
-exports.get = (req, res) => {
-  res.render('login', { pageTitle: 'Login' });
-};
-
 exports.post = (req, res) => {
   const formData = req.body;
   const validatedLogin = validateLogin(formData);
+  let response = {};
   if (!validatedLogin.isValid) {
-    res.status(400).render('login', {
-      pageTitle: 'Login',
-      messages: [{ content: validatedLogin.message, error: true }],
-      formData,
-    });
+    response = { success: false, errorMessage: validatedLogin.message };
+    res.json(response);
   } else {
     checkLogin(formData.email, formData.password)
       .then((userData) => {
         if (userData) {
           // login successful
-          req.session.user_id = userData.id;
-          res.redirect(req.session.destination || 'groups');
+          req.session.id = userData.id;
+          response = { success: true };
         } else {
           // user doesn't exist or incorrect password
-          res.status(400).render('login', {
-            pageTitle: 'Login',
-            messages: [{ content: 'Incorrect email or password', error: true }],
-            formData,
-          });
+          response = { success: false, errorMessage: 'Incorrect email or password' };
         }
-      })
-      .catch(() => {
-        res.status(500).render('error', {
-          layout: 'error',
-          statusCode: 500,
-          errorMessage: 'Internal server error',
-        });
+        res.json(response);
       });
   }
 };

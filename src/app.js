@@ -22,7 +22,7 @@ app.engine(
   }),
 );
 
-app.set('port', process.env.PORT || 4000);
+app.set('port', 4000);
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.png')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(session({
@@ -30,6 +30,7 @@ app.use(session({
   secret: 'keyboard cat',
 }));
 app.use(['/groups', '/create-group'], requireLogin);
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(controllers);
 
