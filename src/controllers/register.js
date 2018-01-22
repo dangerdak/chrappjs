@@ -1,7 +1,7 @@
 const getUser = require('../../queries/getUser');
 const createUser = require('../lib/createUser');
 
-const { validateRegistration } = require('./validate');
+const { validateRegistration } = require('../lib/validate');
 
 exports.get = (req, res) => {
   res.render('register', { pageTitle: 'Register' });
