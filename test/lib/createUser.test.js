@@ -1,5 +1,6 @@
 const test = require('tape');
 
+const dbReset = require('../../database/db_build').seed;
 const createUser = require('../../src/lib/createUser');
 const getUser = require('../../queries/getUser');
 
@@ -10,7 +11,7 @@ test('createUser', (t) => {
     email: 'bill@gmail.com',
     password: 'password',
   };
-  createUser(input.name, input.email, input.password)
+  dbReset().then(() => createUser(input.name, input.email, input.password))
     .then((id) => {
       t.equals(typeof id, 'number', 'Returns id of created user');
       return getUser(input.email);
