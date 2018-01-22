@@ -17,6 +17,7 @@ const connection = {
   user: username,
   password,
   ssl: params.hostname !== 'localhost',
+  idleTimeoutMillis: 3000,
 };
 const db = pgp(connection);
 
