@@ -4,36 +4,122 @@ const supertest = require('supertest');
 const app = require('./../src/app');
 
 test('GET unrestricted endpoints', (t) => {
-  [
+  const endpoints = [
     { url: '/login', expected: { title: 'Login' } },
     { url: '/register', expected: { title: 'Register' } },
 
-  ].forEach((endpoint) => {
+  ];
+  t.plan(endpoints.length * 2);
+  endpoints.forEach((endpoint) => {
     supertest(app)
       .get(endpoint.url)
       .end((err, res) => {
         const title = `<h2>${endpoint.expected.title}</h2>`;
-        t.equals(res.status, 200, 'Responds with 200 status');
-        t.ok(res.text.includes(title), `Page contains title ${title}`);
+        t.equals(res.status, 200, `${endpoint.url} responds with 200 status`);
+        t.ok(res.text.includes(title), `${endpoint.url} responds with page containing title ${title}`);
       });
   });
-  t.end();
 });
 
-test('/login POST invalid data', (t) => {
-  supertest(app)
-    .post('/login')
-    .type('form')
-    .send({ email: '', password: 'hihi' })
-    .expect(400)
-    .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 400, 'Responds with 400 status');
-      t.ok(res.text.includes('Email is required'), 'Page contains correct error message');
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
+test('GET restricted endpoints with authentication', (t) => {
+  const endpoints = [
+    { url: '/create-group', expected: { title: 'Create A Group' } },
+    { url: '/groups', expected: { title: 'Your Groups' } },
+  ];
+  t.plan(endpoints.length * 2);
+  endpoints.forEach((endpoint) => {
+    supertest(app)
+      .post('/login')
+      .type('form')
+      .send({ email: 'sam@gmail.com', password: 'password' })
+      .then((response) => {
+        const cookies = response.headers['set-cookie'];
+        supertest(app)
+          .get(endpoint.url)
+          .set('Cookie', cookies)
+          .expect(200)
+          .end((err, res) => {
+            const title = `<h2>${endpoint.expected.title}</h2>`;
+            t.equals(res.status, 200, `${endpoint.url} responds with 200 status`);
+            t.ok(res.text.includes(title), `${endpoint.url} responds with page containing title ${title}`);
+          });
+      });
+  });
 });
+
+test('GET restricted endpoints without authentication', (t) => {
+  const endpoints = [
+    { url: '/create-group' },
+    { url: '/groups' },
+  ];
+  t.plan(endpoints.length * 2);
+  endpoints.forEach((endpoint) => {
+    supertest(app)
+      .get(endpoint.url)
+      .expect(401)
+      .end((err, res) => {
+        const title = '<h2>Login</h2>';
+        t.equals(res.status, 401, `${endpoint.url} responds with 401 status`);
+        t.ok(res.text.includes(title), `${endpoint.url} renders page with title ${title}`);
+      });
+  });
+});
+
+test('POST unrestricted endpoints with invalid data', (t) => {
+  const endpoints = [{
+    url: '/login',
+    payload: { email: '', password: 'hihi' },
+    expected: { errorMessage: 'Email is required', title: 'Login' },
+  },
+  {
+    url: '/register',
+    payload: {
+      name: '',
+      email: 'd@z.vom',
+      password: 'hi',
+      confirmPassword: 'hid',
+    },
+    expected: { errorMessage: 'Name is required', title: 'Register' },
+  },
+  ];
+  t.plan(endpoints.length * 3);
+  endpoints.forEach((endpoint) => {
+    supertest(app)
+      .post(endpoint.url)
+      .type('form')
+      .send(endpoint.payload)
+      .expect(400)
+      .end((err, res) => {
+        const title = `<h2>${endpoint.expected.title}</h2>`;
+        const { errorMessage } = endpoint.expected;
+        t.equals(res.status, 400, `${endpoint.url} responds with 400 status`);
+        t.ok(res.text.includes(errorMessage), `${endpoint.url} responds with page containing error message '${errorMessage}'`);
+        t.ok(res.text.includes(title), `${endpoint.url} responds with page containing title ${title}`);
+      });
+  });
+});
+
+//test('POST /login incorrect email or password', (t) => {
+  //const payloads = [
+    //{ email: 'dsalfhasldf@gmail.com', password: 'hihi' },
+    //{ email: 'sam@gmail.com', password: 'hihi' },
+  //];
+  //t.plan(payloads.length * 3);
+  //payloads.forEach((payload) => {
+    //supertest(app)
+      //.post('/login')
+      //.type('form')
+      //.send(payload)
+      //.expect(400)
+      //.end((err, res) => {
+        //const title = '<h2>Login</h2>';
+        //const message = 'Incorrect email or password';
+        //t.equals(res.status, 400, 'Responds with 400 status');
+        //t.ok(res.text.includes('Incorrect email or password'), `Page contains message ${message}`);
+        //t.ok(res.text.includes(title), `Page contains string ${title}`);
+      //});
+  //});
+//});
 
 test('/login POST user doesnt exist', (t) => {
   supertest(app)
@@ -67,27 +153,6 @@ test('/login POST incorrect password', (t) => {
     });
 });
 
-test('POST to /register with invalid data', (t) => {
-  supertest(app)
-    .post('/register')
-    .type('form')
-    .send({
-      name: '',
-      email: 'd@z.vom',
-      password: 'hi',
-      confirmPassword: 'hid',
-    })
-    .expect(400)
-    .end((err, res) => {
-      const title = '<h2>Register</h2>';
-      const message = 'Name is required';
-      t.equals(res.status, 400, 'Responds with 400 status');
-      t.ok(res.text.includes(message), `Page contains error message '${message}'`);
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
-});
-
 test('POST to /register with existing user', (t) => {
   supertest(app)
     .post('/register')
@@ -106,50 +171,6 @@ test('POST to /register with existing user', (t) => {
       t.ok(res.text.includes(message), `Page contains error message '${message}'`);
       t.ok(res.text.includes(title), `Page contains string ${title}`);
       t.end();
-    });
-});
-
-test('GET /groups without authentication', (t) => {
-  supertest(app)
-    .get('/groups')
-    .expect(401)
-    .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Renders page with title ${title}`);
-      t.end();
-    });
-});
-
-test('GET /create-group without authentication', (t) => {
-  supertest(app)
-    .get('/create-group')
-    .expect(401)
-    .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Renders page with title ${title}`);
-      t.end();
-    });
-});
-
-test('/create-group GET with authentication', (t) => {
-  supertest(app)
-    .post('/login')
-    .type('form')
-    .send({ email: 'sam@gmail.com', password: 'password' })
-    .then((response) => {
-      const cookies = response.headers['set-cookie'];
-      supertest(app)
-        .get('/create-group')
-        .set('Cookie', cookies)
-        .expect(200)
-        .end((err, res) => {
-          const title = '<h2>Create A Group</h2>';
-          t.equals(res.status, 200, 'Responds with 200 status');
-          t.ok(res.text.includes(title), `Page contains title ${title}`);
-          t.end();
-        });
     });
 });
 
