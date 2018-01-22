@@ -3,16 +3,21 @@ const supertest = require('supertest');
 
 const app = require('./../src/app');
 
-test('/login GET', (t) => {
-  supertest(app)
-    .get('/login')
-    .expect(200)
-    .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
+test('GET unrestricted endpoints', (t) => {
+  [
+    { url: '/login', expected: { title: 'Login' } },
+    { url: '/register', expected: { title: 'Register' } },
+
+  ].forEach((endpoint) => {
+    supertest(app)
+      .get(endpoint.url)
+      .end((err, res) => {
+        const title = `<h2>${endpoint.expected.title}</h2>`;
+        t.equals(res.status, 200, 'Responds with 200 status');
+        t.ok(res.text.includes(title), `Page contains title ${title}`);
+      });
+  });
+  t.end();
 });
 
 test('/login POST invalid data', (t) => {
@@ -57,18 +62,6 @@ test('/login POST incorrect password', (t) => {
       const message = 'Incorrect email or password';
       t.equals(res.status, 400, 'Responds with 400 status');
       t.ok(res.text.includes('Incorrect email or password'), `Page contains message ${message}`);
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
-});
-
-test('/register get', (t) => {
-  supertest(app)
-    .get('/register')
-    .expect(200)
-    .end((err, res) => {
-      const title = '<h2>Register</h2>';
-      t.equals(res.status, 200, 'Responds with 200 status');
       t.ok(res.text.includes(title), `Page contains string ${title}`);
       t.end();
     });
