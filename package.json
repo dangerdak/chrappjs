@@ -11,7 +11,9 @@
     "start:watch": "nodemon src/index.js",
     "coverage": "nyc npm test && nyc report --reporter=html && nyc report --reporter=text-lcov > coverage.lcov",
     "db:seed": "node database/db_build.js --seed",
-    "db:build": "node database/db_build.js"
+    "db:build": "node database/db_build.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently --kill-others-on-fail \"npm run client\" \"npm run start:watch\""
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "codecov": "^2.3.0",
+    "concurrently": "^3.5.1",
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
