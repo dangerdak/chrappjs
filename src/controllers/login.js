@@ -1,4 +1,4 @@
-const { validateLogin } = require('./validate');
+const { validateLogin } = require('../lib/validate');
 const checkLogin = require('../lib/checkLogin');
 
 exports.get = (req, res) => {
