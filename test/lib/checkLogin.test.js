@@ -1,6 +1,6 @@
 const test = require('tape');
 
-const checkLogin = require('../src/lib/checkLogin');
+const checkLogin = require('../../src/lib/checkLogin');
 
 test('checkLogin', (t) => {
   t.plan(4);

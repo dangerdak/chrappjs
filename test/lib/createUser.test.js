@@ -1,7 +1,7 @@
 const test = require('tape');
 
-const createUser = require('../src/lib/createUser');
-const getUser = require('../queries/getUser');
+const createUser = require('../../src/lib/createUser');
+const getUser = require('../../queries/getUser');
 
 test('createUser', (t) => {
   t.plan(2);

@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.test.js | tap-spec",
+    "test": "tape test/runner.js | tap-spec",
     "start:watch": "nodemon src/index.js",
     "coverage": "nyc npm test && nyc report --reporter=html && nyc report --reporter=text-lcov > coverage.lcov",
     "db:seed": "node database/db_build.js --seed",

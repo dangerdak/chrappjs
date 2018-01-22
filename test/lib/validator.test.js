@@ -1,6 +1,6 @@
 const test = require('tape');
 
-const validate = require('../src/lib/validate');
+const validate = require('../../src/lib/validate');
 
 test('Registration validation', (t) => {
   const input = {
