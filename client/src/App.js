@@ -11,10 +11,16 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      errorMessage: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleError = this.handleError.bind(this);
+  }
+
+  handleError(message) {
+    this.setState({ errorMessage: message });
   }
 
   handleChange(event) {
@@ -30,34 +36,48 @@ class Login extends Component {
     };
 
     axios.post('/login', formData)
-      .then((response) => { console.log('response ', response) })
-      .catch((error) => { console.log(error) });
+      .then((response) => {
+        if (response.data.success) {
+          this.props.history.push('/groups');
+        } else {
+          this.handleError(response.data.errorMessage);
+        }
+      })
+      .catch((error) => { console.log(error); });
   }
 
   render() {
+    const { errorMessage } = this.state;
     return (
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email:
-          <input
-            type="text"
-            name="email"
-            id="email"
-            value={this.state.email}
-          />
-        </label>
-        <label htmlFor="password">Password:
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={this.state.password}
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
+      <div> 
+        {errorMessage && (
+          <p>{errorMessage}</p>
+        )}
+        <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
+          <label htmlFor="email">Email:
+            <input
+              type="text"
+              name="email"
+              id="email"
+              value={this.state.email}
+            />
+          </label>
+          <label htmlFor="password">Password:
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={this.state.password}
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+      </div>
     );
   }
 }
+
+const Groups = () => <h2>Your Groups</h2>;
 
 class App extends Component {
   render() {
@@ -70,6 +90,7 @@ class App extends Component {
             </nav>
             <Switch>
               <Route path="/login" component={Login} />
+              <Route path="/groups" component={Groups} />
             </Switch>
           </div>
         </Router>
