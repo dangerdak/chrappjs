@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, BrowserRouter as Router, Link, Switch } from 'react-router-dom';
 import './App.css';
 import ServerError from './components/ServerError';
+import NotFound from './components/NotFound';
 
 const axios = require('axios');
 
@@ -94,6 +95,7 @@ class App extends Component {
               <Route path="/login" component={Login} />
               <Route path="/groups" component={Groups} />
               <Route path="/server-error" component={ServerError} />
+              <Route component={NotFound} />
             </Switch>
           </div>
         </Router>
