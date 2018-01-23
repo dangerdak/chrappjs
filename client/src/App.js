@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, BrowserRouter as Router, Link, Switch } from 'react-router-dom';
 import './App.css';
+import ServerError from './components/ServerError';
 
 const axios = require('axios');
 
@@ -42,8 +43,9 @@ class Login extends Component {
         } else {
           this.handleError(response.data.errorMessage);
         }
-      })
-      .catch((error) => { console.log(error); });
+      }).catch(() => {
+        this.props.history.push('/server-error');
+      });
   }
 
   render() {
@@ -91,6 +93,7 @@ class App extends Component {
             <Switch>
               <Route path="/login" component={Login} />
               <Route path="/groups" component={Groups} />
+              <Route path="/server-error" component={ServerError} />
             </Switch>
           </div>
         </Router>
