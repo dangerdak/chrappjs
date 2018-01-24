@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, BrowserRouter as Router, Link, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './App.css';
 import ServerError from './components/ServerError';
 import NotFound from './components/NotFound';
@@ -52,7 +53,7 @@ class Login extends Component {
   render() {
     const { errorMessage } = this.state;
     return (
-      <div> 
+      <div>
         {errorMessage && (
           <p>{errorMessage}</p>
         )}
@@ -79,6 +80,12 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 const Groups = () => <h2>Your Groups</h2>;
 
