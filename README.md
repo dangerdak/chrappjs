@@ -18,6 +18,12 @@ _A Secret Santa App_
    - [ ] " edit groups
    - [ ] Invite people
 
+### Running locally
+Start both the node server and the react server:
+```
+npm run dev
+```
+
 ## Things I Learnt
 * travis 'install' stage is where npm install happens - so be careful if
   you override this in `.travis.yml`
