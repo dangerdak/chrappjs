@@ -13,6 +13,7 @@ BEGIN;
     
     CREATE TABLE groups (
         id SERIAL PRIMARY KEY,
+        owner_id INTEGER REFERENCES users(id),
         name VARCHAR(100) NOT NULL,
         description VARCHAR(500),
         is_assigned BOOLEAN NOT NULL,
@@ -30,5 +31,22 @@ BEGIN;
 
     INSERT INTO users VALUES
         (DEFAULT, 'sam', 'sam@gmail.com', '$2a$10$CEicRuoB3hvCnlDx9Of/deXIiRInjoRhYuC9VKdox7n0zVXMbzJb2');
+
+    INSERT INTO groups VALUES
+    (
+        DEFAULT,
+        (SELECT id FROM users WHERE email = 'sam@gmail.com'),
+        'The best group evaaz',
+        'This groups is better than all the others',
+        false,
+        to_date('2200-12-25', 'YYYY-MM-DD'),
+        10
+    );
+
+    INSERT INTO users_groups VALUES
+    (
+        (SELECT id FROM users WHERE email = 'sam@gmail.com'),
+        (SELECT id FROM groups WHERE name = 'The best group evaaz')
+    );
 
 COMMIT;
