@@ -45,19 +45,7 @@ test('/login POST incorrect password', (t) => {
     });
 });
 
-test('/register get', (t) => {
-  supertest(app)
-    .get('/register')
-    .expect(200)
-    .end((err, res) => {
-      const title = '<h2>Register</h2>';
-      t.equals(res.status, 200, 'Responds with 200 status');
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
-      t.end();
-    });
-});
-
-test('POST to /register with invalid data', (t) => {
+test('/register POST with invalid data', (t) => {
   supertest(app)
     .post('/register')
     .type('form')
@@ -69,16 +57,14 @@ test('POST to /register with invalid data', (t) => {
     })
     .expect(400)
     .end((err, res) => {
-      const title = '<h2>Register</h2>';
       const message = 'Name is required';
-      t.equals(res.status, 400, 'Responds with 400 status');
-      t.ok(res.text.includes(message), `Page contains error message '${message}'`);
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.equal(res.status, 400, 'Responds with 400 status');
+      t.ok(res.body.message, `Responds with error message '${message}'`);
       t.end();
     });
 });
 
-test('POST to /register with existing user', (t) => {
+test('/register POST with existing user', (t) => {
   supertest(app)
     .post('/register')
     .type('form')
@@ -90,11 +76,9 @@ test('POST to /register with existing user', (t) => {
     })
     .expect(400)
     .end((err, res) => {
-      const title = '<h2>Register</h2>';
       const message = 'Account already exists';
       t.equals(res.status, 400, 'Responds with 400 status');
-      t.ok(res.text.includes(message), `Page contains error message '${message}'`);
-      t.ok(res.text.includes(title), `Page contains string ${title}`);
+      t.ok(res.body.message.includes(message), `Responds with error message '${message}'`);
       t.end();
     });
 });
