@@ -36,6 +36,7 @@ class Login extends Component {
     axios.post('/login', formData)
       .then((response) => {
         if (response.data.success) {
+          localStorage.setItem('token', response.data.token);
           this.props.history.push('/groups');
         } else {
           this.handleError(response.data.errorMessage);

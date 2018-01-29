@@ -6,5 +6,8 @@
       "components": [ "Link" ],
       "specialLink": [ "to" ]
     }]
+  },
+  "env": {
+      "browser": true
   }
 }
