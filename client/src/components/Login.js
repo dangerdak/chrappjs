@@ -37,14 +37,15 @@ class Login extends Component {
 
     axios.post('/login', formData)
       .then((response) => {
-        if (response.data.success) {
-          localStorage.setItem('token', response.data.token);
-          this.setState({ redirectToReferrer: true });
+        localStorage.setItem('token', response.data.token);
+        this.setState({ redirectToReferrer: true });
+      }).catch((err) => {
+        const errorMessage = err.response.data.message;
+        if (errorMessage) {
+          this.handleError(errorMessage);
         } else {
-          this.handleError(response.data.errorMessage);
+          this.props.history.push('/server-error');
         }
-      }).catch(() => {
-        this.props.history.push('/server-error');
       });
   }
 

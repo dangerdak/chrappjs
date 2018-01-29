@@ -13,7 +13,7 @@ const App = () => (
     <Router>
       <div>
         <nav>
-          <Link to="/login">Login</Link>
+          {!localStorage.token && <Link to="/login">Login</Link>}
         </nav>
         <Switch>
           <Route path="/login" component={Login} />
