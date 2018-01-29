@@ -104,9 +104,9 @@ test('GET /groups without authentication', (t) => {
     .get('/groups')
     .expect(401)
     .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Renders page with title ${title}`);
+      const message = 'Please log in to continue';
+      t.equal(res.status, 401, 'Responds with 401 status');
+      t.equal(res.body.message, message, `Responds with message ${message}`);
       t.end();
     });
 });
@@ -116,9 +116,9 @@ test('GET /create-group without authentication', (t) => {
     .get('/create-group')
     .expect(401)
     .end((err, res) => {
-      const title = '<h2>Login</h2>';
-      t.equals(res.status, 401, 'Responds with 401 status');
-      t.ok(res.text.includes(title), `Renders page with title ${title}`);
+      const message = 'Please log in to continue';
+      t.equal(res.status, 401, 'Responds with 401 status');
+      t.equal(res.body.message, message, `Responds with message ${message}`);
       t.end();
     });
 });

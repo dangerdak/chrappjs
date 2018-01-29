@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { validateLogin } = require('../lib/validate');
 const checkLogin = require('../lib/checkLogin');
 
+
 exports.post = (req, res) => {
   const formData = req.body;
   const validatedLogin = validateLogin(formData);
@@ -16,7 +17,11 @@ exports.post = (req, res) => {
       .then((userData) => {
         if (userData) {
           // login successful
-          const token = jwt.sign({ email: formData.email }, process.env.JWT_SECRET);
+          const jwtInfo = {
+            userId: userData.id,
+            email: userData.email,
+          };
+          const token = jwt.sign(jwtInfo, process.env.JWT_SECRET);
           response = { success: true, token };
         } else {
           // user doesn't exist or incorrect password

@@ -6,7 +6,7 @@ const favicon = require('serve-favicon');
 const session = require('cookie-session');
 
 const controllers = require('./controllers/index');
-const requireLogin = require('./controllers/requireLogin');
+const checkAuth = require('./middleware/checkAuth');
 
 const app = express();
 
@@ -29,9 +29,9 @@ app.use(session({
   name: 'sessionId',
   secret: 'keyboard cat',
 }));
-app.use(['/groups', '/create-group'], requireLogin);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(['/groups', '/create-group'], checkAuth);
 app.use(controllers);
 
 module.exports = app;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ class Login extends Component {
       email: '',
       password: '',
       errorMessage: '',
+      redirectToReferrer: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -37,7 +39,7 @@ class Login extends Component {
       .then((response) => {
         if (response.data.success) {
           localStorage.setItem('token', response.data.token);
-          this.props.history.push('/groups');
+          this.setState({ redirectToReferrer: true });
         } else {
           this.handleError(response.data.errorMessage);
         }
@@ -46,8 +48,22 @@ class Login extends Component {
       });
   }
 
+  componentWillMount() {
+    const redirected = this.props.location.state;
+    if (redirected) {
+      this.handleError('Please login to continue');
+    }
+  }
+
   render() {
-    const { errorMessage } = this.state;
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { errorMessage, redirectToReferrer } = this.state;
+
+    if (redirectToReferrer) {
+      return (
+        <Redirect to={from} />
+      );
+    }
     return (
       <div>
         {errorMessage && (
@@ -80,6 +96,13 @@ class Login extends Component {
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      from: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   }).isRequired,
 };
 
