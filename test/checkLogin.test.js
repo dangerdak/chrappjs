@@ -7,7 +7,7 @@ const dbReset = require('../database/db_build').bind(null, seedFile);
 
 const checkLogin = require('../src/lib/checkLogin');
 
-dbReset.then(()=> {
+dbReset().then(()=> {
   test('checkLogin', (t) => {
     t.plan(4);
     checkLogin('sam@gmail.com', 'password')
