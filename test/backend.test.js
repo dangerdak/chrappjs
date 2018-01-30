@@ -10,8 +10,8 @@ require('env2')('./config.env');
 
 const TOKEN = jwt.sign({ userId: 1, email: 'sam@gmail.com' }, process.env.JWT_SECRET);
 
-dbReset().then(() => {
-  test('/login POST with valid input', (t) => {
+test('/login POST with valid input', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/login')
       .type('form')
@@ -24,8 +24,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/login POST with invalid input', (t) => {
+test('/login POST with invalid input', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/login')
       .type('form')
@@ -38,8 +40,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/login POST user doesnt exist', (t) => {
+test('/login POST user doesnt exist', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/login')
       .type('form')
@@ -52,8 +56,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/login POST incorrect password', (t) => {
+test('/login POST incorrect password', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/login')
       .type('form')
@@ -66,8 +72,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/register POST with valid input', (t) => {
+test('/register POST with valid input', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/register')
       .type('form')
@@ -85,8 +93,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/register POST with invalid data', (t) => {
+test('/register POST with invalid data', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/register')
       .type('form')
@@ -104,8 +114,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/register POST with existing user', (t) => {
+test('/register POST with existing user', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .post('/register')
       .type('form')
@@ -123,8 +135,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('GET /groups without authentication', (t) => {
+test('GET /groups without authentication', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .get('/groups')
       .expect(401)
@@ -135,8 +149,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('GET /groups with authentication', (t) => {
+test('GET /groups with authentication', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .get('/groups')
       .set('Authorization', `bearer ${TOKEN}`)
@@ -147,8 +163,10 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('GET /create-group without authentication', (t) => {
+test('GET /create-group without authentication', (t) => {
+  dbReset().then(() => {
     supertest(app)
       .get('/create-group')
       .expect(401)
@@ -159,14 +177,16 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/create-group POST with authentication and valid data', (t) => {
-    const input = {
-      name: 'superxmas',
-      description: 'best xmas ever',
-      budget: 10,
-      deadline: '2999-12-25',
-    };
+test('/create-group POST with authentication and valid data', (t) => {
+  const input = {
+    name: 'superxmas',
+    description: 'best xmas ever',
+    budget: 10,
+    deadline: '2999-12-25',
+  };
+  dbReset().then(() => {
     supertest(app)
       .post('/create-group')
       .set('Authorization', `bearer ${TOKEN}`)
@@ -178,14 +198,16 @@ dbReset().then(() => {
         t.end();
       });
   });
+});
 
-  test('/create-group POST with authentication and invalid data', (t) => {
-    const input = {
-      name: 'superxmas',
-      description: 'best xmas ever',
-      budget: 10,
-      deadline: '2000-12-25',
-    };
+test('/create-group POST with authentication and invalid data', (t) => {
+  const input = {
+    name: 'superxmas',
+    description: 'best xmas ever',
+    budget: 10,
+    deadline: '2000-12-25',
+  };
+  dbReset().then(() => {
     supertest(app)
       .post('/create-group')
       .set('Authorization', `bearer ${TOKEN}`)
