@@ -38,6 +38,9 @@ const validateDescription = (description) => {
   if (description.length > 500) {
     throw new TypeError('Description must be less than 500 characters');
   }
+  if (typeof description !== 'string') {
+    throw new TypeError('Description must be a string');
+  }
 };
 
 const validateDeadline = (date) => {

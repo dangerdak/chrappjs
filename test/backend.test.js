@@ -6,7 +6,21 @@ const app = require('./../src/app');
 
 const TOKEN = jwt.sign({ userId: 1, email: 'sam@gmail.com' }, process.env.JWT_SECRET);
 
-test('/login POST invalid data', (t) => {
+test('/login POST with valid input', (t) => {
+  supertest(app)
+    .post('/login')
+    .type('form')
+    .send({ email: 'sam@gmail.com', password: 'password' })
+    .expect(200)
+    .end((err, res) => {
+      t.equal(res.status, 200, 'Responds with 400 status');
+      t.ok(res.body.success, 'Response with object containing truthy \'success\' value');
+      t.ok(res.body.token, 'Response with object containing truthy \'token\' value');
+      t.end();
+    });
+});
+
+test('/login POST with invalid input', (t) => {
   supertest(app)
     .post('/login')
     .type('form')
@@ -44,6 +58,25 @@ test('/login POST incorrect password', (t) => {
       const message = 'Incorrect email or password';
       t.equals(res.status, 400, 'Responds with 400 status');
       t.ok(res.body.message, `Page contains message ${message}`);
+      t.end();
+    });
+});
+
+test('/register POST with valid input', (t) => {
+  supertest(app)
+    .post('/register')
+    .type('form')
+    .send({
+      name: 'bill',
+      email: 'bill98347983247@gmail.com',
+      password: 'hi',
+      confirmPassword: 'hi',
+    })
+    .expect(200)
+    .end((err, res) => {
+      t.equals(res.status, 200, 'Responds with 200 status');
+      t.ok(res.body.success, 'Response with object containing truthy \'success\' value');
+      t.ok(res.body.token, 'Response with object containing truthy \'token\' value');
       t.end();
     });
 });
@@ -98,6 +131,18 @@ test('GET /groups without authentication', (t) => {
     });
 });
 
+test('GET /groups with authentication', (t) => {
+  supertest(app)
+    .get('/groups')
+    .set('Authorization', `bearer ${TOKEN}`)
+    .expect(200)
+    .end((err, res) => {
+      t.equal(res.status, 200, 'Responds with 200 status');
+      t.equal(typeof res.body, 'object', 'Responds with object');
+      t.end();
+    });
+});
+
 test('GET /create-group without authentication', (t) => {
   supertest(app)
     .get('/create-group')
@@ -129,7 +174,7 @@ test('/create-group POST with authentication and valid data', (t) => {
     });
 });
 
-test('/create-group POST with invalid data', (t) => {
+test('/create-group POST with authentication and invalid data', (t) => {
   const input = {
     name: 'superxmas',
     description: 'best xmas ever',
