@@ -1,10 +1,6 @@
 const test = require('tape');
-const path = require('path');
 
-const { QueryFile } = require('pg-promise');
-
-const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
-const dbReset = require('../database/db_build').bind(null, seedFile);
+const dbReset = require('../database/db_build').seed;
 
 const insertUser = require('../queries/insertUser');
 const getUser = require('../queries/getUser');

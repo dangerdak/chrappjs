@@ -1,13 +1,9 @@
 const test = require('tape');
-const path = require('path');
-const { QueryFile } = require('pg-promise');
 
-const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
-const dbReset = require('../database/db_build').bind(null, seedFile);
-
+const dbReset = require('../database/db_build').seed;
 const checkLogin = require('../src/lib/checkLogin');
 
-dbReset().then(()=> {
+dbReset().then(() => {
   test('checkLogin', (t) => {
     t.plan(4);
     checkLogin('sam@gmail.com', 'password')

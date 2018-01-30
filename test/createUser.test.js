@@ -1,16 +1,11 @@
 const test = require('tape');
 
+const dbReset = require('../database/db_build').seed;
 const createUser = require('../src/lib/createUser');
 const getUser = require('../queries/getUser');
 
-const { QueryFile } = require('pg-promise');
-
-const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
-const dbReset = require('../database/db_build').bind(null, seedFile);
-
 dbReset().then(() => {
   test('createUser', (t) => {
-    t.plan(2);
     const input = {
       name: 'bill',
       email: 'bill@gmail.com',
@@ -22,6 +17,7 @@ dbReset().then(() => {
         return getUser(input.email);
       }).then((userData) => {
         t.notEqual(userData.password, input.password, 'Doesnt store plain text password');
+        t.end();
       })
       .catch(console.log);
   });

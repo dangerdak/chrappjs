@@ -1,14 +1,10 @@
 const test = require('tape');
 const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
-const path = require('path');
 
 const app = require('./../src/app');
 
-const { QueryFile } = require('pg-promise');
-
-const seedFile = new QueryFile(path.join(__dirname, '..', 'database', 'db_seed.sql'), { minify: true });
-const dbReset = require('../database/db_build').bind(null, seedFile);
+const dbReset = require('../database/db_build').seed;
 
 require('env2')('./config.env');
 
