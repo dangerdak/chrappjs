@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { validateLogin } = require('../lib/validate');
 const checkLogin = require('../lib/checkLogin');
 
+require('env2')('./config.env');
 
 exports.post = (req, res) => {
   const formData = req.body;

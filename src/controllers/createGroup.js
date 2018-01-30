@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
+
 const insertGroup = require('../../queries/insertGroup');
 const { validateGroup } = require('../lib/validate.js');
+
+require('env2')('./config.env');
 
 exports.post = (req, res) => {
   const formData = req.body;

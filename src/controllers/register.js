@@ -5,6 +5,8 @@ const createUser = require('../lib/createUser');
 
 const { validateRegistration } = require('../lib/validate');
 
+require('env2')('./config.env');
+
 exports.post = (req, res) => {
   const formData = req.body;
   const validatedRegistration = validateRegistration(formData);

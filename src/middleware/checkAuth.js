@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+require('env2')('./config.env');
+
 const checkAuth = (req, res, next) => {
   try {
     const decoded = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET);

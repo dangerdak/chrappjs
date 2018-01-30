@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const app = require('./../src/app');
 
+require('env2')('./config.env');
+
 const TOKEN = jwt.sign({ userId: 1, email: 'sam@gmail.com' }, process.env.JWT_SECRET);
 
 test('/login POST with valid input', (t) => {
