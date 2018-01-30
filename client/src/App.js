@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Link, Switch } from 'react-router-dom';
 import './App.css';
 
 import Login from './components/Login';
+import Register from './components/Register';
 import Groups from './components/Groups';
 import ServerError from './components/ServerError';
 import NotFound from './components/NotFound';
@@ -12,11 +13,15 @@ const App = () => (
   <div className="App">
     <Router>
       <div>
-        <nav>
-          {!localStorage.token && <Link to="/login">Login</Link>}
-        </nav>
+        {!localStorage.token && (
+          <nav>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </nav>
+        )}
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <PrivateRoute path="/groups" component={Groups} />
           <Route path="/server-error" component={ServerError} />
           <Route component={NotFound} />
