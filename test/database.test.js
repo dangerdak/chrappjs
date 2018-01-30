@@ -53,9 +53,8 @@ dbReset().then(() => {
         };
         return insertGroup(userId, groupInfo);
       })
-      .then((idObj) => {
-        t.equal(typeof idObj.group_id, 'number', 'Returns an object containing the group\'s id');
-        t.equal(typeof idObj.user_id, 'number', 'Returns an object containing the user\'s id');
+      .then((id) => {
+        t.equal(typeof id, 'number', 'Returns the groups id');
         t.end();
       })
       .catch(console.log)

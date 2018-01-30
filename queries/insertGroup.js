@@ -12,7 +12,8 @@ const insertGroup = (userId, groupObj) => {
     +groupObj.budget,
     groupObj.is_assigned,
   ];
-  return dbConnection.one(sqlInsertGroup, values);
+  return dbConnection.one(sqlInsertGroup, values)
+    .then(idObj => idObj.id);
 };
 
 module.exports = insertGroup;
