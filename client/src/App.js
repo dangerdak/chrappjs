@@ -5,6 +5,7 @@ import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
 import Groups from './components/Groups';
+import CreateGroup from './components/CreateGroup';
 import ServerError from './components/ServerError';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <PrivateRoute path="/groups" component={Groups} />
+          <PrivateRoute path="/create-group" component={CreateGroup} />
           <Route path="/server-error" component={ServerError} />
           <Route component={NotFound} />
         </Switch>

@@ -4,8 +4,8 @@ const { validateGroup } = require('../lib/validate.js');
 
 exports.post = (req, res) => {
   const formData = req.body;
-  const decoded = jwt.decode(localStorage.getItem('token'));
-  const { userId } = decoded.payload;
+  const token = req.headers.authorization.split(' ')[1];
+  const { userId } = jwt.verify(token, process.env.JWT_SECRET);
   if (!formData.is_assigned) formData.is_assigned = false;
   const validated = validateGroup(formData);
   let response = {};
