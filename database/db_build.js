@@ -2,22 +2,27 @@ const path = require('path');
 const dbConnection = require('./db_connection');
 const { QueryFile } = require('pg-promise');
 
+const seedFile = new QueryFile(path.join(__dirname, 'db_seed.sql'), { minify: true });
+const buildFile = new QueryFile(path.join(__dirname, 'db_build.sql'), { minify: true });
+
 const build = queryFile => dbConnection.any(queryFile)
   .then(() => {
     console.log('Database build successful.');
-  })
-  .catch(console.log);
+  });
 
 /* istanbul ignore if */
 if (require.main === module) {
-  let fileName;
+  let file;
   if (process.argv[2] === '--seed') {
-    fileName = 'db_seed.sql';
+    file = seedFile;
   } else {
-    fileName = 'db_build.sql';
+    file = buildFile;
   }
-  const queryFile = new QueryFile(path.join(__dirname, fileName), { minify: true });
-  build(queryFile);
+  build(file)
+    .catch(console.log);
 }
 
-module.exports = build;
+module.exports = {
+  build: build.bind(null, buildFile),
+  seed: build.bind(null, seedFile),
+};

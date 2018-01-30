@@ -1,32 +1,22 @@
+const jwt = require('jsonwebtoken');
+
 const insertGroup = require('../../queries/insertGroup');
 const { validateGroup } = require('../lib/validate.js');
 
-exports.get = (req, res) => {
-  res.render('createGroup', { pageTitle: 'Create A Group' });
-};
+require('env2')('./config.env');
 
 exports.post = (req, res) => {
   const formData = req.body;
+  const token = req.headers.authorization.split(' ')[1];
+  const { userId } = jwt.verify(token, process.env.JWT_SECRET);
   if (!formData.is_assigned) formData.is_assigned = false;
   const validated = validateGroup(formData);
-
+  let response = {};
   if (!validated.isValid) {
     // invalid input
-    res.status(400).render('createGroup', {
-      pageTitle: 'Create A Group',
-      messages: [{ content: validated.message, error: true }],
-      formData,
-    });
+    response = { success: false, message: validated.message };
+    res.status(400).json(response);
   } else {
-    insertGroup(req.session.user_id, formData)
-      .then(() =>
-        res.redirect(303, 'groups'))
-      .catch(() => {
-        res.status(500).render('error', {
-          layout: 'error',
-          statusCode: 500,
-          errorMessage: 'Internal server error',
-        });
-      });
+    insertGroup(userId, formData).then(() => res.sendStatus(200));
   }
 };

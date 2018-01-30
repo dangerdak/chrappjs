@@ -7,10 +7,7 @@ const createGroup = require('./createGroup');
 
 const router = express.Router();
 
-router.get('/login', login.get);
-router.get('/register', register.get);
 router.get('/groups', groups.get);
-router.get('/create-group', createGroup.get);
 
 router.post('/register', register.post);
 router.post('/login', login.post);
