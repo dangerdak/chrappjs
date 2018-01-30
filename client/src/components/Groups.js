@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 class Groups extends Component {
@@ -14,7 +15,7 @@ class Groups extends Component {
     axios.get('/groups', { headers: { authorization: `bearer ${localStorage.getItem('token')}` } })
       .then((response) => {
         this.setState({ groups: response.data });
-      }).catch((err) => {
+      }).catch(() => {
         this.props.history.push('/server-error');
       });
   }
@@ -24,12 +25,24 @@ class Groups extends Component {
     return (
       <div>
         <h1>Your Groups</h1>
-        <ul>
-          {groups.map(group => <li key={group.id}>{group.name}</li>)}
-        </ul>
+        {groups.length > 0 ?
+          <ul>
+            {groups.map(group => <li key={group.id}>{group.name}</li>)}
+          </ul>
+        :
+          <p>Your Christmas is looking pretty lonely!
+          Why don&apos;t you <a href="/create-group">create a new group</a>.
+          </p>
+        }
       </div>
     );
   }
 }
+
+Groups.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Groups;
