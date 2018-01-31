@@ -12,12 +12,13 @@ test('getGroups query', (t) => {
     description: 'This groups is better than all the others',
     is_assigned: false,
     budget: 10,
+    members: [{ name: 'sam' }, { name: 'bob' }],
   };
   t.plan(Object.keys(expected).length);
   dbReset().then(() => getGroups(userId))
     .then(([result]) => {
       Object.keys(expected).forEach((key) => {
-        t.equal(result[key], expected[key], `Returns object with same ${key}`);
+        t.deepEqual(result[key], expected[key], `Returns object with same ${key}`);
       });
     })
     .catch(console.log);
