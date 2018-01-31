@@ -1,7 +1,7 @@
 const test = require('tape');
 
-const dbReset = require('../database/db_build').seed;
-const checkLogin = require('../src/lib/checkLogin');
+const dbReset = require('../../database/db_build').seed;
+const checkLogin = require('../../src/lib/checkLogin');
 
 test('checkLogin', (t) => {
   t.plan(4);
