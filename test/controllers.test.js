@@ -13,14 +13,16 @@ test('GET private endpoints with authentication', (t) => {
   ];
   t.plan(endpoints.length * 2);
   endpoints.forEach((endpoint) => {
-    supertest(app)
-      .get(endpoint.url)
-      .set('Authorization', `bearer ${TOKEN}`)
-      .expect(200)
-      .end((err, res) => {
-        t.equal(res.status, 200, `${endpoint.url} responds with 200 status`);
-        t.equal(typeof res.body, 'object', `${endpoint.url} responds with object`);
-      });
+    dbReset().then(() => {
+      supertest(app)
+        .get(endpoint.url)
+        .set('Authorization', `bearer ${TOKEN}`)
+        .expect(200)
+        .end((err, res) => {
+          t.equal(res.status, 200, `${endpoint.url} responds with 200 status`);
+          t.equal(typeof res.body, 'object', `${endpoint.url} responds with object`);
+        });
+    });
   });
 });
 
