@@ -1,11 +1,10 @@
 const test = require('tape');
 
-const dbReset = require('../../database/db_build').seed;
-const createUser = require('../../src/lib/createUser');
-const getUser = require('../../queries/getUser');
+const dbReset = require('../database/db_build').seed;
+const createUser = require('../src/lib/createUser');
+const getUser = require('../queries/getUser');
 
 test('createUser', (t) => {
-  t.plan(2);
   const input = {
     name: 'bill',
     email: 'bill@gmail.com',
@@ -17,6 +16,7 @@ test('createUser', (t) => {
       return getUser(input.email);
     }).then((userData) => {
       t.notEqual(userData.password, input.password, 'Doesnt store plain text password');
+      t.end();
     })
     .catch(console.log);
 });

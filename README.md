@@ -18,6 +18,12 @@ _A Secret Santa App_
    - [ ] " edit groups
    - [ ] Invite people
 
+### Running locally
+Start both the node server and the react server:
+```
+npm run dev
+```
+
 ## Things I Learnt
 * travis 'install' stage is where npm install happens - so be careful if
   you override this in `.travis.yml`
@@ -45,6 +51,8 @@ _A Secret Santa App_
   `bcrypt` is designed for hashing passwords and is more computationally
   expensive (harder to brute force), and a work factor can be provided so it can be made more expensive
   as computers get faster.
+* The [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) module is synchronous under the hood, despite offering an
+  async API [#11](https://github.com/auth0/node-jsonwebtoken/issues/111)
 ## Resources
 * [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/)
 * [Using pg-promises](https://stackoverflow.com/a/44737312/3652070)

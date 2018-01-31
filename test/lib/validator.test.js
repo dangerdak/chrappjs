@@ -1,4 +1,6 @@
 const test = require('tape');
+const fs = require('fs');
+const path = require('path');
 
 const validate = require('../../src/lib/validate');
 
@@ -48,6 +50,13 @@ test('Password validation', (t) => {
 test('Password confirmation validation', (t) => {
   t.throws(() => validate.validateConfirmPassword('', ''), /Password confirmation is required/, 'Missing password confirmation has correct error message');
   t.throws(() => validate.validateConfirmPassword('hi', 'he'), /Passwords must match/, 'Confirmation different to password provides correct error message');
+  t.end();
+});
+
+test('Description validation', (t) => {
+  const longDescription = fs.readFileSync(path.join(__dirname, 'lorem.txt'));
+  t.throws(() => validate.validateDescription(longDescription), /Description must be less than 500 characters/, 'Long description has correct error message');
+  t.throws(() => validate.validateDescription(5), /Description must be a string/, 'Number value has correct error message');
   t.end();
 });
 

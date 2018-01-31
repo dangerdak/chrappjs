@@ -1,41 +1,35 @@
+const jwt = require('jsonwebtoken');
+
 const { validateLogin } = require('../lib/validate');
 const checkLogin = require('../lib/checkLogin');
 
-exports.get = (req, res) => {
-  res.render('login', { pageTitle: 'Login' });
-};
+require('env2')('./config.env');
 
 exports.post = (req, res) => {
   const formData = req.body;
   const validatedLogin = validateLogin(formData);
+  let response = {};
   if (!validatedLogin.isValid) {
-    res.status(400).render('login', {
-      pageTitle: 'Login',
-      messages: [{ content: validatedLogin.message, error: true }],
-      formData,
-    });
+    response = { success: false, message: validatedLogin.message };
+    res.status(400);
+    res.json(response);
   } else {
     checkLogin(formData.email, formData.password)
       .then((userData) => {
         if (userData) {
           // login successful
-          req.session.user_id = userData.id;
-          res.redirect(req.session.destination || 'groups');
+          const jwtInfo = {
+            userId: userData.id,
+            email: userData.email,
+          };
+          const token = jwt.sign(jwtInfo, process.env.JWT_SECRET);
+          response = { success: true, token };
         } else {
           // user doesn't exist or incorrect password
-          res.status(400).render('login', {
-            pageTitle: 'Login',
-            messages: [{ content: 'Incorrect email or password', error: true }],
-            formData,
-          });
+          response = { success: false, message: 'Incorrect email or password' };
+          res.status(400);
         }
-      })
-      .catch(() => {
-        res.status(500).render('error', {
-          layout: 'error',
-          statusCode: 500,
-          errorMessage: 'Internal server error',
-        });
+        res.json(response);
       });
   }
 };
