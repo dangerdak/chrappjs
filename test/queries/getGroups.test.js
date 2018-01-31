@@ -4,7 +4,8 @@ const dbReset = require('../../database/db_build').seed;
 const getGroups = require('../../queries/getGroups');
 
 test('getGroups query', (t) => {
-  const userId = 1;
+  // TODO: hardcoding id could be brittle
+  const userId = 2;
   const expected = {
     owner_id: 1,
     name: 'The best group evaaz',
