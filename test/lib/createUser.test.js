@@ -1,8 +1,8 @@
 const test = require('tape');
 
-const dbReset = require('../database/db_build').seed;
-const createUser = require('../src/lib/createUser');
-const getUser = require('../queries/getUser');
+const dbReset = require('../../database/db_build').seed;
+const createUser = require('../../src/lib/createUser');
+const getUser = require('../../queries/getUser');
 
 test('createUser', (t) => {
   const input = {

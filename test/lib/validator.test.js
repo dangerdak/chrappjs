@@ -54,7 +54,7 @@ test('Password confirmation validation', (t) => {
 });
 
 test('Description validation', (t) => {
-  const longDescription = fs.readFileSync(path.join(__dirname, 'lorem.txt'));
+  const longDescription = fs.readFileSync(path.join(__dirname, '..', 'lorem.txt'));
   t.throws(() => validate.validateDescription(longDescription), /Description must be less than 500 characters/, 'Long description has correct error message');
   t.throws(() => validate.validateDescription(5), /Description must be a string/, 'Number value has correct error message');
   t.end();
