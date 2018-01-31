@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import GroupDetail from './GroupDetail';
+
 class Groups extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,7 @@ class Groups extends Component {
         <h1>Your Groups</h1>
         {groups.length > 0 ?
           <ul>
-            {groups.map(group => <li key={group.id}>{group.name}</li>)}
+            {groups.map(group => <li key={group.id}><GroupDetail group={group} /></li>)}
           </ul>
         :
           <p>Your Christmas is looking pretty lonely!
