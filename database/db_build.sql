@@ -21,4 +21,12 @@ BEGIN;
         budget INTEGER
     );
 
+    DROP TABLE IF EXISTS users_groups CASCADE;
+
+    CREATE TABLE users_groups (
+        user_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL,
+        group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL,
+        CONSTRAINT users_groups_pkey PRIMARY KEY (user_id, group_id)
+    );
+
 COMMIT;
