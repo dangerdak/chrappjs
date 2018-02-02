@@ -2,7 +2,7 @@ const dbConnection = require('./../database/db_connection');
 
 const sqlGetGroupIds = 'SELECT group_id FROM users_groups WHERE user_id = $1';
 const sqlGetGroups = `SELECT * FROM groups WHERE id IN (${sqlGetGroupIds})`;
-const sqlGetMembers = 'SELECT name from users_groups INNER JOIN users ON users.id = users_groups.user_id WHERE users_groups.group_id = $1';
+const sqlGetMembers = 'SELECT id, name from users_groups INNER JOIN users ON users.id = users_groups.user_id WHERE users_groups.group_id = $1';
 
 const getGroups = (userId) => {
   let groupList = [];

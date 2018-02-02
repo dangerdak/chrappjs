@@ -12,7 +12,7 @@ test('getGroups query', (t) => {
     description: 'This groups is better than all the others',
     is_assigned: false,
     budget: 10,
-    members: [{ name: 'sam' }, { name: 'bob' }],
+    members: [{ name: 'sam', id: 1 }, { name: 'bob', id: 2 }],
   };
   t.plan(Object.keys(expected).length);
   dbReset().then(() => getGroups(userId))
