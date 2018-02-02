@@ -7,11 +7,9 @@ const GroupDetail = ({ group }) => (
     <p>Budget: £{group.budget}</p>
     <p>{group.description}</p>
     <ul>Members: {group.members.map(member => <li key={member.name}>{member.name}</li>)}</ul>
-    <p>Your wishlist: </p>
     { group.isAssigned &&
       <div>
         <p>Your recipient: </p>
-        <p>Recipients wishlist: </p>
       </div>
     }
   </article>
