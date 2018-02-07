@@ -53,6 +53,79 @@ npm run dev
   as computers get faster.
 * The [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) module is synchronous under the hood, despite offering an
   async API [#11](https://github.com/auth0/node-jsonwebtoken/issues/111)
+* Using [bind in a JSX prop is
+  bad](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md) - a new function is created on every render.
+  In order to pass information about a list item to a list item's handler,
+  create a component for each item. Pass the event handler from the list to the
+  list item, and within the list item, create another handler function which
+  calls the generic one passed from the list, with list item specific info as
+  its argument
+
+```jsx
+import React, { Component } from 'react';
+
+class Invitee extends Component {
+  constructor(props) {
+    super(props);
+
+    this.delete = this.delete.bind(this);
+  }
+
+  delete() {
+    this.props.onDelete(this.props.email);
+  }
+
+  render() {
+    return (
+      <li>{this.props.email}
+        <input type="button" onClick={this.delete} value="x" />
+      </li>
+    );
+  }
+}
+
+
+class Invitees extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      emails: [],
+    };
+
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+
+  handleDelete(emailToRemove) {
+    this.setState(prevState => ({
+      emails: prevState.emails.filter(email => email !== emailToRemove),
+    }));
+  }
+
+  render() {
+    const { emails } = this.state;
+    return (
+      <div>
+        {emails.length > 0 &&
+          <ul>
+            {emails.map(email => (
+              <Invitee
+                key={email}
+                email={email}
+                onDelete={this.handleDelete}
+              />
+            ))}
+          </ul>
+        }
+      </div>
+    );
+  }
+}
+
+export default Invitees;
+```
+
 ## Resources
 * [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/)
 * [Using pg-promises](https://stackoverflow.com/a/44737312/3652070)

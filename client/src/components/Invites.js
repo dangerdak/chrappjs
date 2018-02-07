@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Invitee from './Invitee';
+
 class Invites extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,7 @@ class Invites extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleAddInvitee = this.handleAddInvitee.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleChange(event) {
@@ -20,22 +23,43 @@ class Invites extends Component {
   handleAddInvitee(event) {
     event.preventDefault();
     this.setState(prevState => ({
-      emails: prevState.emails.concat(prevState.email),
+      emails: prevState.emails.concat(this.state.email),
       email: '',
     }));
   }
 
+  handleDelete(removeEmail) {
+    this.setState(prevState => ({
+      emails: prevState.emails.filter(email => email !== removeEmail),
+    }));
+  }
+
   render() {
+    const { emails } = this.state;
     return (
       <div>
-        <div>{this.state.emails.join(', ')}</div>
+        <label htmlFor="email">
+          Enter emails for group invites:
+        </label>
         <input
           onChange={this.handleChange}
           type="email"
           name="email"
+          id="email"
           value={this.state.email}
         />
-        <button onClick={this.handleAddInvitee}>Add</button>
+        <button onClick={this.handleAddInvitee}>+</button>
+        {emails.length > 0 &&
+          <ul>
+            {emails.map(email => (
+              <Invitee
+                key={email}
+                email={email}
+                onDelete={this.handleDelete}
+              />
+            ))}
+          </ul>
+        }
       </div>
     );
   }
