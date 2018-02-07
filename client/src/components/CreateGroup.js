@@ -12,11 +12,14 @@ class CreateGroup extends Component {
       budget: 0,
       deadline: '',
       errorMessage: '',
+      email: '',
+      invitees: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleError = this.handleError.bind(this);
+    this.handleAddInvitee = this.handleAddInvitee.bind(this);
   }
 
   handleError(message) {
@@ -25,6 +28,13 @@ class CreateGroup extends Component {
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleAddInvitee() {
+    this.setState(prevState => ({
+      invitees: prevState.invitees.concat(prevState.email),
+      email: '',
+    }));
   }
 
   handleSubmit(event) {
@@ -92,6 +102,14 @@ class CreateGroup extends Component {
               value={this.state.value}
             />
           </label>
+
+          <div>{this.state.invitees.join(', ')}</div>
+          <input
+            type="email"
+            name="email"
+            value={this.state.email}
+          />
+          <button type="button" onClick={this.handleAddInvitee}>Add</button>
           <button type="submit">Create group</button>
         </form>
       </div>
