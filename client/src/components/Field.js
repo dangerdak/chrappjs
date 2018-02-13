@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/*
+ * Labelled HTML input field
+ */
 const Field = (props) => {
   return (
     <div className="form__field">
@@ -12,6 +15,7 @@ const Field = (props) => {
             name={props.name}
             id={props.id}
             value={props.value}
+            onKeyDown={props.onKeyDown}
           />
           {props.children}
         </div>
@@ -22,6 +26,7 @@ const Field = (props) => {
           name={props.name}
           id={props.id}
           value={props.value}
+          onKeyDown={props.onKeyDown}
         />
       }
     </div>

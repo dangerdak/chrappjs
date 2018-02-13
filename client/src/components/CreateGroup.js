@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import Invitee from './Invitee';
+import EditableList from './EditableList';
 import Field from './Field';
 
 class CreateGroup extends Component {
@@ -28,7 +28,7 @@ class CreateGroup extends Component {
 
   handleAddEmail() {
     this.setState(prevState => ({
-      emails: prevState.emails.concat(this.state.email),
+      emails: prevState.emails.concat(prevState.email),
       email: '',
     }));
   }
@@ -112,26 +112,14 @@ class CreateGroup extends Component {
             value={this.state.deadline}
             label="Deadline: "
           />
-          <Field
-            type="email"
-            name="email"
-            id="email"
-            value={this.state.email}
-            label="Enter emails for group invites: "
-          >
-            <input type="button" onClick={this.handleAddEmail} value="+" />
-          </Field>
-          {this.state.emails.length > 0 &&
-            <ul className="invitee-list">
-              {this.state.emails.map(email => (
-                <Invitee
-                  key={email}
-                  email={email}
-                  onDelete={this.handleDeleteEmail}
-                />
-              ))}
-            </ul>
-          }
+          <EditableList 
+            inputValue={this.state.email}
+            handleDelete={this.handleDeleteEmail}
+            handleAdd={this.handleAddEmail}
+            currentList={this.state.emails}
+            inputLabel="Enter emails for group invites: "
+            inputId="email"
+          />
           <button type="submit">Create group</button>
         </form>
       </div>
