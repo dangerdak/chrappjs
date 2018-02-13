@@ -122,7 +122,7 @@ class CreateGroup extends Component {
             <input type="button" onClick={this.handleAddEmail} value="+" />
           </Field>
           {this.state.emails.length > 0 &&
-            <ul>
+            <ul className="invitee-list">
               {this.state.emails.map(email => (
                 <Invitee
                   key={email}

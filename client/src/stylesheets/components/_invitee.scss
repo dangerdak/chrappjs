@@ -1,0 +1,18 @@
+.invitee-list {
+    list-style-type: none;
+    padding: 0;
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0.5em 0;
+        padding: 0.2em 0;
+        background-color: lightgrey;
+    }
+    &__text {
+        display: block;
+        max-width: 80%;
+        flex: 0 1 auto;
+        word-wrap: break-word;
+    }
+}

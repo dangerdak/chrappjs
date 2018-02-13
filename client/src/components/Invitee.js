@@ -14,8 +14,8 @@ class Invitee extends Component {
 
   render() {
     return (
-      <li>{this.props.email}
-        <input type="button" onClick={this.onDelete} value="x" />
+      <li className="invitee-list__item"><span className="invitee-list__text">{this.props.email}</span>
+        <input className="invitee-list__button" type="button" onClick={this.onDelete} value="x" />
       </li>
     );
   }
