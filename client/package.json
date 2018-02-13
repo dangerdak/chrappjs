@@ -18,6 +18,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^3.5.1",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6"
   }
 }
