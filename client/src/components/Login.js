@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import Field from './Field';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -70,23 +72,25 @@ class Login extends Component {
         {errorMessage && (
           <p>{errorMessage}</p>
         )}
-        <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-          <label htmlFor="email">Email:
-            <input
-              type="text"
-              name="email"
-              id="email"
-              value={this.state.email}
-            />
-          </label>
-          <label htmlFor="password">Password:
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={this.state.password}
-            />
-          </label>
+        <form
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
+          <Field
+            type="text"
+            name="email"
+            id="email"
+            value={this.state.email}
+            label="Email: "
+          />
+          <Field
+            type="password"
+            name="password"
+            id="password"
+            value={this.state.password}
+            label="Password: "
+          />
           <button type="submit">Login</button>
         </form>
       </div>

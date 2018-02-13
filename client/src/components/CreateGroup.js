@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import Invites from './Invites';
+import Invitee from './Invitee';
+import Field from './Field';
 
 class CreateGroup extends Component {
   constructor(props) {
@@ -11,14 +12,31 @@ class CreateGroup extends Component {
     this.state = {
       name: '',
       description: '',
-      budget: 0,
+      budget: '',
       deadline: '',
       errorMessage: '',
+      email: '',
+      emails: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleError = this.handleError.bind(this);
+    this.handleAddEmail = this.handleAddEmail.bind(this);
+    this.handleDeleteEmail = this.handleDeleteEmail.bind(this);
+  }
+
+  handleAddEmail() {
+    this.setState(prevState => ({
+      emails: prevState.emails.concat(this.state.email),
+      email: '',
+    }));
+  }
+
+  handleDeleteEmail(removeEmail) {
+    this.setState(prevState => ({
+      emails: prevState.emails.filter(email => email !== removeEmail),
+    }));
   }
 
   handleError(message) {
@@ -60,41 +78,60 @@ class CreateGroup extends Component {
         {errorMessage && (
           <p>{errorMessage}</p>
         )}
-        <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-          <label htmlFor="name">Name:
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="description">Description:
-            <input
-              type="textarea"
-              name="description"
-              id="description"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="budget">Budget:
-            <input
-              type="number"
-              name="budget"
-              id="budget"
-              placeholder="£"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="deadline">Deadline:
-            <input
-              type="date"
-              name="deadline"
-              id="deadline"
-              value={this.state.value}
-            />
-          </label>
-          <Invites />
+        <form
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
+          <Field
+            type="text"
+            id="name"
+            name="name"
+            value={this.state.name}
+            label="Name: "
+          />
+          <Field
+            type="textarea"
+            name="description"
+            id="description"
+            value={this.state.description}
+            label="Description: "
+          />
+          <Field
+            type="number"
+            name="budget"
+            id="budget"
+            placeholder="£"
+            value={this.state.budget}
+            label="Budget: "
+          />
+          <Field
+            type="date"
+            name="deadline"
+            id="deadline"
+            value={this.state.deadline}
+            label="Deadline: "
+          />
+          <Field
+            type="email"
+            name="email"
+            id="email"
+            value={this.state.email}
+            label="Enter emails for group invites: "
+          >
+            <input type="button" onClick={this.handleAddEmail} value="+" />
+          </Field>
+          {this.state.emails.length > 0 &&
+            <ul>
+              {this.state.emails.map(email => (
+                <Invitee
+                  key={email}
+                  email={email}
+                  onDelete={this.handleDeleteEmail}
+                />
+              ))}
+            </ul>
+          }
           <button type="submit">Create group</button>
         </form>
       </div>

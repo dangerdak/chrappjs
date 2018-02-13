@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import Field from './Field';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -58,39 +60,39 @@ class Register extends Component {
         {errorMessage && (
           <p>{errorMessage}</p>
         )}
-        <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-          <label htmlFor="name">Name:
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="email">Email:
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="password">Password:
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={this.state.value}
-            />
-          </label>
-          <label htmlFor="confirm-password">Confirm password:
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirm-password"
-              value={this.state.value}
-            />
-          </label>
+        <form
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
+          <Field
+            type="text"
+            name="name"
+            id="name"
+            value={this.state.name}
+            label="Name: "
+          />
+          <Field
+            type="email"
+            name="email"
+            id="email"
+            value={this.state.email}
+            label="Email: "
+          />
+          <Field
+            type="password"
+            name="password"
+            id="password"
+            value={this.state.password}
+            label="Password: "
+          />
+          <Field
+            type="password"
+            name="confirmPassword"
+            id="confirm-password"
+            value={this.state.confirmPassword}
+            label="Confirm password: "
+          />
           <button type="submit">Register</button>
         </form>
       </div>
