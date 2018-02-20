@@ -29,7 +29,6 @@ BEGIN;
         CONSTRAINT users_groups_pkey PRIMARY KEY (user_id, group_id)
     );
 
-
     INSERT INTO users VALUES
         (DEFAULT, 'sam', 'sam@gmail.com', '$2a$10$CEicRuoB3hvCnlDx9Of/deXIiRInjoRhYuC9VKdox7n0zVXMbzJb2'),
         (DEFAULT, 'bob', 'bob@gmail.com', '$2a$10$CEicRuoB3hvCnlDx9Of/deXIiRInjoRhYuC9VKdox7n0zVXMbzJb2');

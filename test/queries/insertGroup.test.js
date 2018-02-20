@@ -16,12 +16,16 @@ test('Insert group into database', (t) => {
     is_assigned: false,
     deadline: futureDate,
   };
-  t.plan(1);
+  t.plan(2);
   dbReset().then(() => insertUser('james', 'james@gmail.com', 'jammy'))
-    .then(userId => insertGroup(userId, groupInfo).then(() => getGroups(userId)))
-    .then((groups) => {
-      const newGroup = groups[0];
-      t.deepEqual(newGroup.members[0].id, newGroup.owner_id, 'Makes owner a member of the new group');
-    })
+    .then(userId =>
+      insertGroup(userId, groupInfo)
+        .then((groupId) => {
+          t.equal(typeof groupId, 'number', 'Returns id of created group');
+        }).then(() => getGroups(userId))
+        .then((groups) => {
+          const newGroup = groups[0];
+          t.deepEqual(newGroup.members[0].id, newGroup.owner_id, 'Makes owner a member of the new group');
+        }))
     .catch(console.log);
 });

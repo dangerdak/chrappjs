@@ -3,6 +3,12 @@ _A Secret Santa App_
 
 ## Why
 ## What
+* React
+* Express
+* Nodemailer
+* Sass
+* TravisCI
+
 ## How
 ### Stages of development
 1. Serve a few pages.  
@@ -13,8 +19,8 @@ _A Secret Santa App_
    * Also write tests for database queries
 3. Link login and registration pages to database
 4. Add groups to database
-   - [ ] Display groups on groups page
-   - [ ] Ability to create groups
+   - [x] Display groups on groups page
+   - [x] Ability to create groups
    - [ ] " edit groups
    - [ ] Invite people
 

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const insertGroup = require('../../queries/insertGroup');
 const { validateGroup } = require('../lib/validate.js');
+const mail = require('../lib/mail');
 
 require('env2')('./config.env');
 
@@ -17,6 +18,8 @@ exports.post = (req, res) => {
     response = { success: false, message: validated.message };
     res.status(400).json(response);
   } else {
-    insertGroup(userId, formData).then(() => res.sendStatus(200));
+    insertGroup(userId, formData)
+      .then(groupId => formData.emails && mail.sendInvites(formData.emails, formData.name, groupId))
+      .then(() => res.sendStatus(200));
   }
 };
