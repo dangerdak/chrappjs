@@ -55,6 +55,7 @@ class CreateGroup extends Component {
       description: this.state.description,
       budget: this.state.budget,
       deadline: this.state.deadline,
+      emails: this.state.emails,
     };
 
     axios.post('/create-group', formData, { headers: { authorization: `bearer ${localStorage.getItem('token')}` } })
